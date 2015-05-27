@@ -57,7 +57,7 @@ public class HttpUtils {
         request.addHeader(HTTP.CONTENT_TYPE,"application/json");
         request.addHeader("Accept", "application/json");
 
-        request.setEntity(new StringEntity(json.toString().replaceAll("\"", "'"), CODEPAGE));
+        request.setEntity(new StringEntity(json.toString(), CODEPAGE));
         response = client.execute(request);
 
         return (response.getStatusLine().getStatusCode() == 200);
