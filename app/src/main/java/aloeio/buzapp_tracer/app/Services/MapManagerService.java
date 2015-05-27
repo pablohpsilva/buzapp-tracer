@@ -61,12 +61,8 @@ public class MapManagerService {
     }
 
     public void drawUserLocation(){
-        if(buzappMyLocationProvider == null) {
-            if(MainActivity.getMainRoute() != null)
-                buzappMyLocationProvider = new MyLocationProvider(fragment, MainActivity.getMainRoute(), MainActivity.getMainId());
-            else
-                buzappMyLocationProvider = new MyLocationProvider(fragment);
-        }
+        if(buzappMyLocationProvider == null)
+            buzappMyLocationProvider = new MyLocationProvider(fragment, MainActivity.getMainRoute(), MainActivity.getMainId());
 
         if(this.myLocationService == null)
             this.myLocationService = new MyLocationService(fragment,buzappMyLocationProvider);

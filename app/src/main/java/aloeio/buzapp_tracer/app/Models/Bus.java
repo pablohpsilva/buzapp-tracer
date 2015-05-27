@@ -18,22 +18,26 @@ import java.net.SocketException;
  */
 public class Bus implements IBackendJSON {
     private String URL = "http://54.69.229.42:8080/busweb/receivebus";
-    private String route = "T131";
-    private int id = 22;
+    private String route;
+    private int id;
     private Location location;
     private JSONObject jsonObject;
     private boolean speedNotNull = true;
     private HttpUtils httpUtils;
 
     public Bus(){
-        this.jsonObject = new JSONObject();
-        this.location = new Location("");
-        httpUtils = new HttpUtils();
+        this(null,-1);
     }
 
     public Bus(String route, int id){
-        this.route = route;
-        this.id = id;
+        if(route != null && id != -1) {
+            this.route = route + "";
+            this.id = id + 0;
+        }
+        else {
+            this.route = route + "T131";
+            this.id = 25;
+        }
         this.jsonObject = new JSONObject();
         this.location = new Location("");
         httpUtils = new HttpUtils();

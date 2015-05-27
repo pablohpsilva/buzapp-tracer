@@ -1,5 +1,6 @@
 package aloeio.buzapp_tracer.app.Services.Overrides;
 
+import aloeio.buzapp_tracer.app.MainActivity;
 import aloeio.buzapp_tracer.app.Models.Bus;
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -47,17 +48,14 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
     private String lastInstruction = "";
 
     public MyLocationProvider(Fragment activity){
-        this.activity = activity;
-        mLocationManager = (LocationManager) activity.getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Log.i(this.getClass().getName(), "criada");
-        bus = new Bus();
+        this(activity, null, -1);
     }
 
     public MyLocationProvider(Fragment activity, String route, int id){
         this.activity = activity;
         mLocationManager = (LocationManager) activity.getActivity().getSystemService(Context.LOCATION_SERVICE);
         Log.i(this.getClass().getName(), "criada");
-        bus = new Bus(route, id);
+        bus = new Bus(MainActivity.getMainRoute(), MainActivity.getMainId());
     }
 
     @Override
