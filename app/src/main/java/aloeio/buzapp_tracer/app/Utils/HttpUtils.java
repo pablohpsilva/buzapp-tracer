@@ -13,6 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,6 +54,8 @@ public class HttpUtils {
     public boolean postRequest(String url, JSONObject json) throws SocketException, UnsupportedEncodingException, JSONException, IOException {
         HttpPost request = new HttpPost(url);
         HttpClient client = new DefaultHttpClient(this.createHttpParams());
+        request.addHeader(HTTP.CONTENT_TYPE,"application/json");
+        request.addHeader("Accept", "application/json");
 
         request.setEntity(new StringEntity(json.toString().replaceAll("\"", "'"), CODEPAGE));
         response = client.execute(request);
