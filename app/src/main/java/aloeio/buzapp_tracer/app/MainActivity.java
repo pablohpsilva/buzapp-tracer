@@ -23,6 +23,8 @@ public class MainActivity extends FragmentActivity implements
     private EditText routeEditText;
     private EditText idEditText;
     private Button startButton;
+    private static String mainRoute;
+    private static int mainId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class MainActivity extends FragmentActivity implements
                 else if(Integer.parseInt(id) < 25)
                     Toast.makeText(MainActivity.this, "Problema. Somente numeros maiores que 25", Toast.LENGTH_SHORT).show();
                 else{
+                    mainRoute = route;
+                    mainId = Integer.parseInt(id);
                     findViewById(R.id.main_controls).setVisibility(View.INVISIBLE);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.fragment_container, new MapFragment())
@@ -96,5 +100,13 @@ public class MainActivity extends FragmentActivity implements
 
     private boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+    }
+
+    public static String getMainRoute(){
+        return mainRoute;
+    }
+
+    public static int getMainId(){
+        return mainId;
     }
 }

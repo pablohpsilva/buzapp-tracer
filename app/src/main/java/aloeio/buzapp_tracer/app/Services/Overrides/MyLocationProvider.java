@@ -53,6 +53,13 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
         bus = new Bus();
     }
 
+    public MyLocationProvider(Fragment activity, String route, int id){
+        this.activity = activity;
+        mLocationManager = (LocationManager) activity.getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Log.i(this.getClass().getName(), "criada");
+        bus = new Bus(route, id);
+    }
+
     @Override
     public boolean startLocationProvider(IMyLocationConsumer iMyLocationConsumer) {
         boolean result = false;

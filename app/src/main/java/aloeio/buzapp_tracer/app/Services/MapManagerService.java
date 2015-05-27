@@ -1,5 +1,6 @@
 package aloeio.buzapp_tracer.app.Services;
 
+import aloeio.buzapp_tracer.app.MainActivity;
 import aloeio.buzapp_tracer.app.R;
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
@@ -60,8 +61,12 @@ public class MapManagerService {
     }
 
     public void drawUserLocation(){
-        if(buzappMyLocationProvider == null)
-            buzappMyLocationProvider = new MyLocationProvider(fragment);
+        if(buzappMyLocationProvider == null) {
+            if(MainActivity.getMainRoute() != null)
+                buzappMyLocationProvider = new MyLocationProvider(fragment, MainActivity.getMainRoute(), MainActivity.getMainId());
+            else
+                buzappMyLocationProvider = new MyLocationProvider(fragment);
+        }
 
         if(this.myLocationService == null)
             this.myLocationService = new MyLocationService(fragment,buzappMyLocationProvider);
