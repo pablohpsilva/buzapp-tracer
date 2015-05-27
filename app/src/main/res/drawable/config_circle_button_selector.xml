@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/config_circle_item_selected_shape">
+        <!--<shape xmlns:android="http://schemas.android.com/apk/res/android"-->
+               <!--android:shape="oval">-->
+
+            <!--<solid android:color="@color/light_transparent_blue"/>-->
+
+            <!--<size-->
+                    <!--android:width="50dp"-->
+                    <!--android:height="50dp"/>-->
+        <!--</shape>-->
+    </item> <!-- pressed -->
+    <item android:state_focused="true" android:drawable="@drawable/config_circle_item_selected_shape">
+        <!--<shape xmlns:android="http://schemas.android.com/apk/res/android"-->
+               <!--android:shape="oval">-->
+
+            <!--<solid android:color="@color/light_transparent_blue"/>-->
+
+            <!--<size-->
+                    <!--android:width="50dp"-->
+                    <!--android:height="50dp"/>-->
+        <!--</shape>-->
+    </item> <!-- focused -->
+    <item android:drawable="@drawable/config_circle_item_shape">
+        <!--<shape xmlns:android="http://schemas.android.com/apk/res/android"-->
+               <!--android:shape="oval">-->
+
+            <!--<solid android:color="@color/light_transparent_blue"/>-->
+
+            <!--<size-->
+                    <!--android:width="50dp"-->
+                    <!--android:height="50dp"/>-->
+        <!--</shape>-->
+    </item> <!-- default -->
+</selector>

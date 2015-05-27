@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:background="@color/light_gray">
+
+    <TextView
+            android:id="@+id/dialog_txt_head"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="25sp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:fontFamily="sans-serif-light"/>
+
+    <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="-10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/line_horizontal_separator_gray" />
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <!--<ImageView-->
+                <!--android:id="@+id/img_dialog"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:visibility="invisible"/>-->
+
+        <TextView
+                android:id="@+id/dialog_txt_body"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-light"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="55dp">
+
+        <Button
+                android:id="@+id/dialog_btn_ok"
+                android:background="@drawable/dialog_button_selector"
+                android:clickable="true"
+                android:text="OK"
+                android:fontFamily="sans-serif-light"
+                style="@style/ButtonDialog"/>
+
+        <Button
+                android:id="@+id/dialog_btn_maybe"
+                android:background="@drawable/dialog_button_selector"
+                android:clickable="true"
+                android:text="MAYBE"
+                android:fontFamily="sans-serif-light"
+                style="@style/ButtonDialog"
+                android:visibility="gone"/>
+
+        <Button
+                android:id="@+id/dialog_btn_cancel"
+                android:background="@drawable/dialog_button_selector"
+                android:clickable="true"
+                android:text="CANCEL"
+                android:fontFamily="sans-serif-light"
+                style="@style/ButtonDialog"
+                android:visibility="gone"/>
+    </LinearLayout>
+
+</LinearLayout>
+
+<!--</LinearLayout>-->

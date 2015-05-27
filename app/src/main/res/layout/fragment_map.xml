@@ -1,0 +1,142 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="aloeio.buzapp.app.Fragments.MapFragment">
+
+    <org.osmdroid.views.MapView
+            android:id="@+id/home_mapview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true" />
+
+    <FrameLayout
+            android:id="@+id/home_layout"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fitsSystemWindows="true">
+
+        <LinearLayout
+                android:id="@+id/home_layout_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/black_overlay"
+                android:visibility="invisible">
+
+
+            <TextView
+                    android:id="@+id/home_distance"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Dont delete me!!!"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:id="@+id/home_layout_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/black_overlay"
+                android:visibility="invisible"
+                android:contentDescription="@string/fieldsearch_acessibility">
+
+
+            <ListView
+                    android:id="@+id/home_lst_results"
+                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_weight="40.55"
+                    android:layout_marginTop="75dp"
+                    android:fadingEdge="none"
+                    android:cacheColorHint="#00000000"
+                    android:layout_marginBottom="55dp">
+            </ListView>
+        </LinearLayout>
+
+        <!--<LinearLayout android:id="@+id/fullscreen_home_content_controls"-->
+                      <!--android:layout_width="match_parent"-->
+                      <!--android:layout_height="55dp"-->
+                      <!--android:layout_gravity="bottom|center_horizontal"-->
+                      <!--android:orientation="horizontal"-->
+                      <!--tools:ignore="UselessParent">-->
+
+            <!--<include layout="@layout/linear_menu_bar"/>-->
+
+
+        <!--</LinearLayout>-->
+
+        <LinearLayout
+                android:id="@+id/fullscreen_home_content_controls2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="right|top"
+                android:orientation="horizontal"
+                tools:ignore="UselessParent"
+                android:visibility="invisible">
+            <Button
+                    android:id="@+id/home_btn_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|top"
+                    android:background="@drawable/search_button"
+                    style="?android:attr/buttonStyleSmall"
+                    android:contentDescription="@string/btn_buscar_linhas_acessibility"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/home_balloon_tip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible">
+
+            <include layout="@layout/balloon_tip"/>
+
+        </LinearLayout>
+
+
+
+        <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:id="@+id/home_edt_autocomplete"
+                android:hint="@string/home_edt_search_hint"
+                style="@style/EditTextSearch"
+                android:visibility="invisible"
+                android:textColor="@color/black"
+                />
+
+        <LinearLayout
+                android:id="@+id/home_layout_report_bus_issue"
+                style="@style/TemplateWrapContent"
+                android:layout_gravity="bottom|right"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="70dp"
+                android:visibility="invisible">
+            <Button
+                    android:id="@+id/home_btn_report_bus_issues"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/busissue_button"
+                    style="?android:attr/buttonStyleSmall"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!--<include-->
+    <!--layout="@layout/template_loading"-->
+    <!--android:layout_above="@+id/home_layout_search"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_weight="99"/>-->
+
+    <include
+            layout="@layout/linear_loading"
+            android:layout_above="@+id/my_home_activity"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"/>
+
+</FrameLayout>

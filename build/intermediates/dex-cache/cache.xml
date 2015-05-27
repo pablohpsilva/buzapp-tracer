@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/libs/osmdroid-android-4.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2fcf7bc3cb27daa6e67c8990ea418d19f6b5b296">
+        <dex dex="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/pre-dexed/debug/osmdroid-android-4.3-1a1d77c05fc57acd8dbc29f98bcafabc05fe0fb0.jar" />
+    </item>
+    <item
+        jar="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-a4b4af9e29b6c10fd3479ed7081ecbe6451d2477.jar" />
+    </item>
+    <item
+        jar="/usr/local/Cellar/android-sdk/23.0.2/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-fb2b3bed4e807fa1ff6b167a5d2b7ba45eb34126.jar" />
+    </item>
+    <item
+        jar="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/libs/osmbonuspack_v5.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="6056a0c43cd37168d2bbcc0bdac23b9b8c5452f2">
+        <dex dex="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/pre-dexed/debug/osmbonuspack_v5.1-eb9dff523529d938b55b1bd4e07e3acbe1a3290b.jar" />
+    </item>
+    <item
+        jar="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/libs/slf4j-android-1.5.8.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="404eece4bb07ea211f5a879c22458775c612f0df">
+        <dex dex="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/pre-dexed/debug/slf4j-android-1.5.8-f1f5d1fd28546005c672664bcd9f0d40615d2b8b.jar" />
+    </item>
+    <item
+        jar="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/pre-dexed/debug/classes-1e01f170c5b06277063125bb3735a04bd551155a.jar" />
+    </item>
+    <item
+        jar="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/exploded-aar/com.android.support/gridlayout-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2e8c06a7aad26ba8d2d5cab8134556594fe36856">
+        <dex dex="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/pre-dexed/debug/classes-de02fa6e0ee5509021e1c02c240690df3a98aa06.jar" />
+    </item>
+    <item
+        jar="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/Users/pablohenrique/Documents/personal/buzapp-tracer/app/build/intermediates/pre-dexed/debug/classes-9c63de7029e46e00fe581723c878343db415c641.jar" />
+    </item>
+
+</items>

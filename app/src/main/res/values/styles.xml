@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <!--<item name="metaButtonBarStyle">@style/ButtonBar</item>-->
+        <!--<item name="metaButtonBarButtonStyle">@style/ButtonBarButton</item>-->
+    </style>
+
+    <style name="ButtonBarButton"/>
+
+    <style name="ButtonBar">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+
+    <style name="TemplateHorizontallyAlignedButtons">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">0.333</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:layout_gravity">center|bottom</item>
+        <item name="android:drawingCacheQuality">high</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="TemplateDefaultButtonHeight">
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <style name="TemplateLargeButtonDefault">
+        <item name="android:layout_width">270dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="TemplateRegularText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/graphity</item>
+    </style>
+
+    <style name="TemplateBackButton" parent="TemplateRegularText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">left|top</item>
+    </style>
+
+    <style name="TemplateWrapContent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+    <style name="ButtonApp" parent="TemplateHorizontallyAlignedButtons"/>
+    <style name="ButtonDialog" parent="TemplateHorizontallyAlignedButtons"/>
+
+
+    <style name="ButtonMain" parent="TemplateWrapContent">
+        <item name="android:layout_marginBottom">50dp</item>
+        <item name="android:contentDescription">Fazer login com o Google </item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:height">45dp</item>
+        <item name="android:width">270dp</item>
+        <item name="android:radius">8dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">23sp</item>
+    </style>
+
+    <style name="ButtonConfig" parent="TemplateLargeButtonDefault">
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:width">274dp</item>
+        <item name="android:height">45dp</item>
+    </style>
+
+    <style name="EditTextSearch">
+        <item name="android:layout_marginTop">17dp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">70dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">left|top</item>
+        <item name="android:padding">10dip</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/graphity</item>
+        <item name="android:background">@drawable/rectangle_rounded_shape</item>
+    </style>
+
+    <style name="BackButtonIcon" parent="TemplateBackButton">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
+
+    <style name="BackButtonText" parent="TemplateBackButton">
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginLeft">42dp</item>
+    </style>
+
+    <style name="SmallTextViewAbout" parent="TemplateWrapContent">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="LargeTextView" parent="SmallTextViewAbout">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
+</resources>
