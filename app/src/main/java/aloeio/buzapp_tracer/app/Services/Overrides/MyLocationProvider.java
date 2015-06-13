@@ -1,6 +1,5 @@
 package aloeio.buzapp_tracer.app.Services.Overrides;
 
-import aloeio.buzapp_tracer.app.MainActivity;
 import aloeio.buzapp_tracer.app.Models.Bus;
 import android.support.v4.app.Fragment;
 import android.content.Context;

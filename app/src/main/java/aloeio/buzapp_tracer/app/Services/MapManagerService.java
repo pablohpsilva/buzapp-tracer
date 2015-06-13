@@ -6,19 +6,13 @@ import aloeio.buzapp_tracer.app.Fragments.MapFragment;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyMarker;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyMarkerInfoWindow;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.bonuspack.overlays.Marker;
-import org.osmdroid.bonuspack.overlays.Polyline;
-import org.osmdroid.bonuspack.routing.Road;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
-
-import java.util.ArrayList;
 
 /**
  * Created by pablohenrique on 4/16/15.
@@ -28,20 +22,11 @@ public class MapManagerService {
     private MyMarkerInfoWindow infoWindow;
     private MyMarker busMarker, busStopMarker, stepMarker;
     private MyLocationProvider buzappMyLocationProvider;
-    private ExceptionService exceptionControllerSingleton = ExceptionService.getInstance();
     private MapView mapView;
     private MyLocationService myLocationService;
-    private Polyline busRoadOverlay = null;
-    private Polyline userRoadOverlay = null;
-    private Road userRoadObject = null;
-    private Handler handler;
-    private Runnable runnable;
 
     final private int CAMERA_ZOOM = 16;
 //    final private int CAMERA_ZOOM = 15;
-    final private int LINE_WIDTH = 5;
-    final private int LINE_DEFAULT_COLOR = Color.parseColor("#4A34B5");
-    final private int LINE_USER_COLOR = Color.parseColor("#6495ED");
     final private String MAPQUEST_API_KEY = "Fmjtd%7Cluu82quznu%2C2w%3Do5-94tgg4";
 
 
