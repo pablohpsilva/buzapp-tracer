@@ -1,5 +1,6 @@
 package aloeio.buzapp_tracer.app.Services;
 
+import aloeio.buzapp_tracer.app.MainActivity;
 import aloeio.buzapp_tracer.app.R;
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
@@ -62,7 +63,7 @@ public class MyLocationService {
         if(myLocationProvider == null)
             myLocationOverlay = new MyLocationNewOverlay(fragment.getActivity(), map);
         else
-            myLocationOverlay = new MyLocationNewOverlay(fragment.getActivity(), new MyLocationProvider(this.fragment), map);
+            myLocationOverlay = new MyLocationNewOverlay(fragment.getActivity(), new MyLocationProvider(this.fragment, MainActivity.getMainRoute()), map);
         map.getOverlays().add(myLocationOverlay);
         myLocationOverlay.enableMyLocation();
         isSearching = true;

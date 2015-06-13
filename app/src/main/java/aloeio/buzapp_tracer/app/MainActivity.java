@@ -19,10 +19,10 @@ public class MainActivity extends FragmentActivity implements
     final private static String MAPZIPNAME = "Uberlandia_2015-03-06_223449.zip";
 
     private EditText routeEditText;
-    private EditText idEditText;
+//    private EditText idEditText;
     private Button startButton;
     private static String mainRoute;
-    private static int mainId;
+//    private static int mainId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,23 +32,23 @@ public class MainActivity extends FragmentActivity implements
 
         routeEditText = (EditText) findViewById(R.id.main_edt_route);
         routeEditText.setText("T131");
-        idEditText = (EditText) findViewById(R.id.main_edt_id);
-        idEditText.setText("25");
+//        idEditText = (EditText) findViewById(R.id.main_edt_id);
+//        idEditText.setText("25");
         startButton = (Button) findViewById(R.id.main_btn_start);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String route = routeEditText.getText().toString();
-                String id = idEditText.getText().toString();
+//                String id = idEditText.getText().toString();
                 if(route.length() != 4)
                     Toast.makeText(MainActivity.this, "Problema. Escreva uma rota real. Exemplo: T131", Toast.LENGTH_SHORT).show();
-                else if(!isNumeric(id))
-                    Toast.makeText(MainActivity.this, "Problema. Somente numeros maiores que 25", Toast.LENGTH_SHORT).show();
-                else if(Integer.parseInt(id) < 25)
-                    Toast.makeText(MainActivity.this, "Problema. Somente numeros maiores que 25", Toast.LENGTH_SHORT).show();
+//                else if(!isNumeric(id))
+//                    Toast.makeText(MainActivity.this, "Problema. Somente numeros maiores que 25", Toast.LENGTH_SHORT).show();
+//                else if(Integer.parseInt(id) < 25)
+//                    Toast.makeText(MainActivity.this, "Problema. Somente numeros maiores que 25", Toast.LENGTH_SHORT).show();
                 else{
                     mainRoute = route;
-                    mainId = Integer.parseInt(id);
+//                    mainId = Integer.parseInt(id);
                     findViewById(R.id.main_controls).setVisibility(View.INVISIBLE);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.fragment_container, new MapFragment())
@@ -104,7 +104,7 @@ public class MainActivity extends FragmentActivity implements
         return mainRoute;
     }
 
-    public static int getMainId(){
-        return mainId;
-    }
+//    public static int getMainId(){
+//        return mainId;
+//    }
 }

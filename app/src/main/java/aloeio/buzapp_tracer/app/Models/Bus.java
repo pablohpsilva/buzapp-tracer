@@ -1,52 +1,53 @@
 package aloeio.buzapp_tracer.app.Models;
 
 import aloeio.buzapp_tracer.app.Interfaces.IBackendJSON;
-import aloeio.buzapp_tracer.app.Utils.HttpAsync;
 import aloeio.buzapp_tracer.app.Utils.HttpUtils;
 import android.location.Location;
 import android.util.Log;
-import android.widget.Toast;
+import org.apache.http.HttpException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.SocketException;
+import java.net.URISyntaxException;
 
 /**
  * Created by pablohenrique on 5/26/15.
  */
 public class Bus implements IBackendJSON {
-    private String URL = "http://54.69.229.42:8080/busweb/receivebus";
+    private String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/receivebus";
+    private String urlGetServiceID = "http://buzapp-services.aloeio.com/busweb/generatedid/T131";
     private String route;
-    private int id;
+    private int id = -1;
     private Location location;
     private JSONObject jsonObject;
     private boolean speedNotNull = true;
     private HttpUtils httpUtils;
 
-    public Bus(){
-        this(null,-1);
-    }
-
-    public Bus(String route, int id){
-        if(route != null && id != -1) {
-            this.route = route + "";
-            this.id = id + 0;
-        }
+    public Bus(String route){
+//        if(route != null) {
+//            this.route = route + "";
+//            this.id = id + 0;
+//        }
+//        else {
+//            this.route = route + "T131";
+//            this.id = 25;
+//        }
+        if(route.equals(""))
+            throw new NullPointerException();
         else {
-            this.route = route + "T131";
-            this.id = 25;
+            this.route = route;
+            this.jsonObject = new JSONObject();
+            this.location = new Location("");
+            httpUtils = new HttpUtils();
+            this.setServiceId();
         }
-        this.jsonObject = new JSONObject();
-        this.location = new Location("");
-        httpUtils = new HttpUtils();
     }
 
     public void sendJSON(Location location) throws JSONException, IOException, NullPointerException {
         JSONObject json = this.prepareJSON(location);
-        if(json != null) {
-            httpUtils.postRequest(URL, json);
+        if(json != null && this.id != -1) {
+            httpUtils.postRequest(urlPostBusLocation, json);
             Log.d("Bus",json.toString());
         }
     }
@@ -94,5 +95,30 @@ public class Bus implements IBackendJSON {
 
     private boolean verifyNullSpeed(Location location){
         return (location.getSpeed() > 0.0);
+    }
+
+    private void setServiceId(){
+        new Runnable() {
+            public void run() {
+                try {
+                    String result = httpUtils.getGZippedRequest(urlGetServiceID);
+                    id = Integer.parseInt(result);
+                    this.finalize();
+                } catch (HttpException e) {
+                    e.printStackTrace();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Throwable throwable) {
+                    System.out.println();
+                    System.out.println();
+                    System.out.println("Thread failed");
+                    System.out.println();
+                    System.out.println();
+                    throwable.printStackTrace();
+                }
+            }
+        }.run();
     }
 }

@@ -47,15 +47,12 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
     private int pathStepCounter = 0;
     private String lastInstruction = "";
 
-    public MyLocationProvider(Fragment activity){
-        this(activity, null, -1);
-    }
-
-    public MyLocationProvider(Fragment activity, String route, int id){
+    public MyLocationProvider(Fragment activity, String route){
         this.activity = activity;
-        mLocationManager = (LocationManager) activity.getActivity().getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager = (LocationManager) this.activity.getActivity().getSystemService(Context.LOCATION_SERVICE);
         Log.i(this.getClass().getName(), "criada");
-        bus = new Bus(MainActivity.getMainRoute(), MainActivity.getMainId());
+        bus = new Bus(route);
+        startBusTracking();
     }
 
     @Override
@@ -99,7 +96,8 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
             return;
 
         tempLocation = location;
-        startBusTracking();
+
+        restartBusTracking();
 
         mLocation = location;
 
@@ -132,6 +130,18 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
         if(location1 != null && location2 != null)
             return (location1.getLatitude() != location2.getLatitude() && location1.getLongitude() != location2.getLongitude());
         return false;
+    }
+
+    public void stopBusTracking(){
+        if(senderTimer != null)
+            senderTimer.cancel();
+        senderTimer = null;
+    }
+
+    public void restartBusTracking(){
+        if(senderTimer == null){
+            startBusTracking();
+        }
     }
 
     public void startBusTracking(){

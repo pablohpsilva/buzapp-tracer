@@ -9,18 +9,13 @@ import aloeio.buzapp_tracer.app.Services.Overrides.MyMarkerInfoWindow;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.bonuspack.overlays.Marker;
 import org.osmdroid.bonuspack.overlays.Polyline;
 import org.osmdroid.bonuspack.routing.Road;
-import org.osmdroid.bonuspack.routing.RoadNode;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
@@ -62,12 +57,13 @@ public class MapManagerService {
 
     public void drawUserLocation(){
         if(buzappMyLocationProvider == null)
-            buzappMyLocationProvider = new MyLocationProvider(fragment, MainActivity.getMainRoute(), MainActivity.getMainId());
+            buzappMyLocationProvider = new MyLocationProvider(fragment, MainActivity.getMainRoute());
 
         if(this.myLocationService == null)
             this.myLocationService = new MyLocationService(fragment,buzappMyLocationProvider);
         else
             this.myLocationService.centerMyLocation();
+        this.myLocationService.followUser();
     }
 
     private void setOSMDefaults(){
@@ -89,6 +85,7 @@ public class MapManagerService {
 
         mapView.getController().setZoom(CAMERA_ZOOM);
         setOSMCenter(startingPoint);
+
         mapView.postInvalidate();
     }
 
