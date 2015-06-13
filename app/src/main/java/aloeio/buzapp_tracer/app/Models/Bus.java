@@ -17,7 +17,7 @@ import java.net.SocketException;
  * Created by pablohenrique on 5/26/15.
  */
 public class Bus implements IBackendJSON {
-    private String URL = "http://buzapp-services.aloeio.com:80/busweb/receivebus";
+    private String URL = "http://54.69.229.42:8080/busweb/receivebus";
     private String route;
     private int id;
     private Location location;

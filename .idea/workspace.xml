@@ -44,38 +44,7 @@
     <favorites_list name="buzapp-tracer" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/aloeio/buzapp_tracer/app/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5183727">
-              <caret line="51" column="56" selection-start-line="51" selection-start-column="56" selection-end-line="51" selection-end-column="56" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1328#2394#0" expanded="true" />
-                <element signature="e#2393#2394#0" expanded="true" />
-                <element signature="e#2463#2519#0" expanded="false" />
-                <element signature="e#2805#2863#0" expanded="false" />
-                <element signature="e#3095#3165#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_main.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.172414">
-              <caret line="10" column="21" selection-start-line="10" selection-start-column="24" selection-end-line="16" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -1418,7 +1387,8 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1757,8 +1727,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2060,15 +2029,16 @@
       <workItem from="1432679312320" duration="1884000" />
       <workItem from="1432694623235" duration="7033000" />
       <workItem from="1432703179594" duration="2916000" />
+      <workItem from="1434204482846" duration="252000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17546000" />
+    <option name="totallyTimeSpent" value="17798000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1920" height="1173" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="23" width="1920" height="1173" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2167,6 +2137,27 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/aloeio/buzapp_tracer/app/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="21" selection-start-line="10" selection-start-column="24" selection-end-line="16" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/aloeio/buzapp_tracer/app/Services/Overrides/MyLocationProvider.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2176,11 +2167,8 @@
             <element signature="docComment;field#pathStepCounter#0;class#MyLocationProvider#0" expanded="false" />
             <element signature="method#startLocationProvider#1;class#MyLocationProvider#0" expanded="false" />
             <element signature="e#2840#2841#0" expanded="false" />
-            <element signature="e#2872#2873#0" expanded="false" />
             <element signature="method#onProviderEnabled#0;class#MyLocationProvider#0" expanded="false" />
             <element signature="method#onProviderDisabled#0;class#MyLocationProvider#0" expanded="false" />
-            <element signature="e#4241#5471#0" expanded="false" />
-            <element signature="e#5470#5471#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2191,11 +2179,6 @@
           <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1328#2394#0" expanded="true" />
-            <element signature="e#2393#2394#0" expanded="true" />
-            <element signature="e#2463#2519#0" expanded="false" />
-            <element signature="e#2805#2863#0" expanded="false" />
-            <element signature="e#3095#3165#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2228,11 +2211,8 @@
             <element signature="docComment;field#pathStepCounter#0;class#MyLocationProvider#0" expanded="false" />
             <element signature="method#startLocationProvider#1;class#MyLocationProvider#0" expanded="false" />
             <element signature="e#2840#2841#0" expanded="false" />
-            <element signature="e#2872#2873#0" expanded="false" />
             <element signature="method#onProviderEnabled#0;class#MyLocationProvider#0" expanded="false" />
             <element signature="method#onProviderDisabled#0;class#MyLocationProvider#0" expanded="false" />
-            <element signature="e#4241#5471#0" expanded="false" />
-            <element signature="e#5470#5471#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2264,24 +2244,19 @@
           <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1328#2394#0" expanded="true" />
-            <element signature="e#2393#2394#0" expanded="true" />
-            <element signature="e#2463#2519#0" expanded="false" />
-            <element signature="e#2805#2863#0" expanded="false" />
-            <element signature="e#3095#3165#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="15" selection-end-column="16" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/aloeio/buzapp_tracer/app/Services/Overrides/MyMarkerInfoWindow.java">
@@ -2331,11 +2306,8 @@
             <element signature="docComment;field#pathStepCounter#0;class#MyLocationProvider#0" expanded="false" />
             <element signature="method#startLocationProvider#1;class#MyLocationProvider#0" expanded="false" />
             <element signature="e#2840#2841#0" expanded="false" />
-            <element signature="e#2872#2873#0" expanded="false" />
             <element signature="method#onProviderEnabled#0;class#MyLocationProvider#0" expanded="false" />
             <element signature="method#onProviderDisabled#0;class#MyLocationProvider#0" expanded="false" />
-            <element signature="e#4241#5471#0" expanded="false" />
-            <element signature="e#5470#5471#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2395,11 +2367,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1328#2394#0" expanded="true" />
-            <element signature="e#2393#2394#0" expanded="true" />
-            <element signature="e#2463#2519#0" expanded="false" />
-            <element signature="e#2805#2863#0" expanded="false" />
-            <element signature="e#3095#3165#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2428,14 +2395,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/linear_loading.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.310345">
           <caret line="18" column="13" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="13" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/aloeio/buzapp_tracer/app/Interfaces/IBackendJSON.java">
@@ -2571,7 +2538,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2619,11 +2585,8 @@
             <element signature="docComment;field#pathStepCounter#0;class#MyLocationProvider#0" expanded="false" />
             <element signature="method#startLocationProvider#1;class#MyLocationProvider#0" expanded="false" />
             <element signature="e#2840#2841#0" expanded="false" />
-            <element signature="e#2872#2873#0" expanded="false" />
             <element signature="method#onProviderEnabled#0;class#MyLocationProvider#0" expanded="false" />
             <element signature="method#onProviderDisabled#0;class#MyLocationProvider#0" expanded="false" />
-            <element signature="e#4241#5471#0" expanded="false" />
-            <element signature="e#5470#5471#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2639,27 +2602,22 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.172414">
+        <state vertical-scroll-proportion="0.0">
           <caret line="10" column="21" selection-start-line="10" selection-start-column="24" selection-end-line="16" selection-end-column="47" />
           <folding />
         </state>
       </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/aloeio/buzapp_tracer/app/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5183727">
-          <caret line="51" column="56" selection-start-line="51" selection-start-column="56" selection-end-line="51" selection-end-column="56" />
+        <state vertical-scroll-proportion="0.6102362">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1328#2394#0" expanded="true" />
-            <element signature="e#2393#2394#0" expanded="true" />
-            <element signature="e#2463#2519#0" expanded="false" />
-            <element signature="e#2805#2863#0" expanded="false" />
-            <element signature="e#3095#3165#0" expanded="false" />
           </folding>
         </state>
       </provider>
