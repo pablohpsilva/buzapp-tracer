@@ -47,7 +47,8 @@ public class Bus implements IBackendJSON {
     public void sendJSON(Location location) throws JSONException, IOException, NullPointerException {
         JSONObject json = this.prepareJSON(location);
         if(json != null && this.id != -1) {
-            httpUtils.postGZippedRequest(urlPostBusLocation, json);
+            httpUtils.postRequest(urlPostBusLocation, json);
+//            httpUtils.postGZippedRequest(urlPostBusLocation, json);
             Log.d("Bus",json.toString());
         }
     }
