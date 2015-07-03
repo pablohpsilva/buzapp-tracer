@@ -16,7 +16,7 @@
             <!--android:visibility="invisible"-->
             <!--tools:layout="@layout/fragment_map"/>-->
 
-    <GridLayout
+    <android.support.v7.widget.GridLayout
             android:id="@+id/main_controls"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -48,7 +48,7 @@
             android:layout_column="1"/>
 
 
-    </GridLayout>
+    </android.support.v7.widget.GridLayout>
 
 
         <include
