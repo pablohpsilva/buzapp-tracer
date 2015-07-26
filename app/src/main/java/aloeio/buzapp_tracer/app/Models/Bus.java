@@ -18,6 +18,7 @@ public class Bus implements IBackendJSON {
     //    private String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/receivebus";
     //    private String urlGetServiceID = "http://buzapp-services.aloeio.com/busweb/generatedid/T131";
     private String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/receivebus";
+//    private String urlGetServiceID = "http://buzapp-services.aloeio.com/busweb/tracer/generatedid/";
     private String urlGetServiceID = "http://buzapp-services.aloeio.com/busweb/tracer/generatedid/";
     private String route;
     private int id = -1;
@@ -50,6 +51,7 @@ public class Bus implements IBackendJSON {
         JSONObject json = this.prepareJSON(location);
         if(json != null && this.id != -1) {
             httpUtils.postRequest(urlPostBusLocation, json);
+            System.out.println(json.toString());
 //            httpUtils.postGZippedRequest(urlPostBusLocation, json);
             Log.d("Bus",json.toString());
         }
@@ -104,7 +106,6 @@ public class Bus implements IBackendJSON {
         new Runnable() {
             public void run() {
                 try {
-//                    String result = httpUtils.getRequest(urlGetServiceID + route);
                     String result = httpUtils.getGZippedRequest(urlGetServiceID + route);
                     id = Integer.parseInt(result);
                     this.finalize();
