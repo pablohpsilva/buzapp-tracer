@@ -32,6 +32,8 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
     private Fragment activity;
     private Bus bus;
     private Timer senderTimer;
+    private int TIMER_VAR = 2000;
+    private int iddleApp = 0;
 
 
     /**
@@ -96,7 +98,9 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
 
         tempLocation = location;
 
-        restartBusTracking();
+//        restartBusTracking();
+//        startBusTracking();
+        decideContinuity();
 
         mLocation = location;
 
@@ -143,6 +147,23 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
         }
     }
 
+    /*
+        Este metodo decide se o Timer continua ligado ou nao.
+        Se ha mais de 10 minutos = 600000 milisegundos
+     */
+    public void decideContinuity(){
+        if(verifyDifferentPosition(oldMLocation, tempLocation)){
+            startBusTracking();
+            iddleApp = 0;
+        } else {
+            iddleApp += 2000;
+        }
+
+        if(iddleApp > 600000){
+            stopBusTracking();
+        }
+    }
+
     public void startBusTracking(){
         if(senderTimer == null) {
             senderTimer = new Timer();
@@ -167,7 +188,7 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
                         Log.d("MyLocationProviderE", e.getMessage());
                     }
                 }
-            }, 0, 2000);
+            }, 0, TIMER_VAR);
         }
     }
 }
