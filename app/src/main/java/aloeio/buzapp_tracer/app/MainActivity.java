@@ -1,6 +1,7 @@
 package aloeio.buzapp_tracer.app;
 
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
+import aloeio.buzapp_tracer.app.Models.BusInfo;
 import aloeio.buzapp_tracer.app.Utils.Utils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,10 +20,11 @@ public class MainActivity extends FragmentActivity implements
     final private static String MAPZIPNAME = "Uberlandia_2015-03-06_223449.zip";
 
     private EditText routeEditText;
-//    private EditText idEditText;
+    private EditText plateEditText;
+    private Switch accessibilitySwitch;
+    private Spinner typeSpinner;
     private Button startButton;
     private static String mainRoute;
-//    private static int mainId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,24 +33,25 @@ public class MainActivity extends FragmentActivity implements
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
 
         routeEditText = (EditText) findViewById(R.id.main_edt_route);
-        routeEditText.setText("T131");
-//        idEditText = (EditText) findViewById(R.id.main_edt_id);
-//        idEditText.setText("25");
+        plateEditText = (EditText) findViewById(R.id.main_edt_plate);
+        accessibilitySwitch = (Switch) findViewById(R.id.main_swt_accessibility);
+        typeSpinner = (Spinner) findViewById(R.id.main_spn_type);
         startButton = (Button) findViewById(R.id.main_btn_start);
+        BusInfo.getInstance();
+
+        routeEditText.setText("T131");
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String route = routeEditText.getText().toString();
-//                String id = idEditText.getText().toString();
+                String plate = plateEditText.getText().toString();
                 if(route.length() != 4)
                     Toast.makeText(MainActivity.this, "Problema. Escreva uma rota real. Exemplo: T131", Toast.LENGTH_SHORT).show();
-//                else if(!isNumeric(id))
-//                    Toast.makeText(MainActivity.this, "Problema. Somente numeros maiores que 25", Toast.LENGTH_SHORT).show();
-//                else if(Integer.parseInt(id) < 25)
-//                    Toast.makeText(MainActivity.this, "Problema. Somente numeros maiores que 25", Toast.LENGTH_SHORT).show();
-                else{
-                    mainRoute = route;
-//                    mainId = Integer.parseInt(id);
+                else if(plate.length() != 7)
+                    Toast.makeText(MainActivity.this, "Problema. Escreva uma placa real. Exemplo: ABC1234", Toast.LENGTH_SHORT).show();
+                else {
+//                    mainRoute = route;
+                    BusInfo.getInstance().setAll(routeEditText, plateEditText, typeSpinner, accessibilitySwitch);
                     findViewById(R.id.main_controls).setVisibility(View.INVISIBLE);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.fragment_container, new MapFragment())
@@ -59,10 +62,6 @@ public class MainActivity extends FragmentActivity implements
 
         utils = new Utils(this);
         copyMapFileIfNeeded();
-
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.fragment_container, new MapFragment())
-//                .commit();
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout

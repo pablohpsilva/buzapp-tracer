@@ -98,8 +98,6 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
 
         tempLocation = location;
 
-//        restartBusTracking();
-//        startBusTracking();
         decideContinuity();
 
         mLocation = location;

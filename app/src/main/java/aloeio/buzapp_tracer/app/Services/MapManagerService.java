@@ -1,11 +1,11 @@
 package aloeio.buzapp_tracer.app.Services;
 
 import aloeio.buzapp_tracer.app.MainActivity;
+import aloeio.buzapp_tracer.app.Models.BusInfo;
 import aloeio.buzapp_tracer.app.R;
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyMarker;
-import aloeio.buzapp_tracer.app.Services.Overrides.MyMarkerInfoWindow;
 import android.graphics.drawable.Drawable;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.bonuspack.overlays.Marker;
@@ -19,7 +19,6 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
  */
 public class MapManagerService {
     private final MapFragment fragment;
-    private MyMarkerInfoWindow infoWindow;
     private MyMarker busMarker, busStopMarker, stepMarker;
     private MyLocationProvider buzappMyLocationProvider;
     private MapView mapView;
@@ -42,7 +41,7 @@ public class MapManagerService {
 
     public void drawUserLocation(){
         if(buzappMyLocationProvider == null)
-            buzappMyLocationProvider = new MyLocationProvider(fragment, MainActivity.getMainRoute());
+            buzappMyLocationProvider = new MyLocationProvider(fragment, BusInfo.getInstance().getRoute());
 
         if(this.myLocationService == null)
             this.myLocationService = new MyLocationService(fragment,buzappMyLocationProvider);
@@ -106,14 +105,7 @@ public class MapManagerService {
     }
 
     private void createMarkersDefault(MyMarker marker, Drawable icon){
-        createBubbleInfo();
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        marker.setInfoWindow(this.infoWindow);
         marker.setIcon(icon);
-    }
-
-    private void createBubbleInfo(){
-        if(this.infoWindow == null)
-            this.infoWindow = new MyMarkerInfoWindow(mapView);
     }
 }
