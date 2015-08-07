@@ -21,6 +21,7 @@ public class MainActivity extends FragmentActivity implements
 
     private EditText routeEditText;
     private EditText plateEditText;
+    private EditText numberEditText;
     private Switch accessibilitySwitch;
     private Spinner typeSpinner;
     private Button startButton;
@@ -34,6 +35,7 @@ public class MainActivity extends FragmentActivity implements
 
         routeEditText = (EditText) findViewById(R.id.main_edt_route);
         plateEditText = (EditText) findViewById(R.id.main_edt_plate);
+        numberEditText = (EditText) findViewById(R.id.main_edt_bus_number);
         accessibilitySwitch = (Switch) findViewById(R.id.main_swt_accessibility);
         typeSpinner = (Spinner) findViewById(R.id.main_spn_type);
         startButton = (Button) findViewById(R.id.main_btn_start);
@@ -45,14 +47,21 @@ public class MainActivity extends FragmentActivity implements
             public void onClick(View v) {
                 String route = routeEditText.getText().toString();
                 String plate = plateEditText.getText().toString();
+                String number = numberEditText.getText().toString();
+
                 if(route.length() != 4)
                     Toast.makeText(MainActivity.this, "Problema. Escreva uma rota real. Exemplo: T131", Toast.LENGTH_SHORT).show();
                 else if(plate.length() != 7)
                     Toast.makeText(MainActivity.this, "Problema. Escreva uma placa real. Exemplo: ABC1234", Toast.LENGTH_SHORT).show();
+                else if(isNumeric(number))
+                    Toast.makeText(MainActivity.this, "Problema. O Numero do onibus deve ser somente numeros.", Toast.LENGTH_SHORT).show();
                 else {
 //                    mainRoute = route;
-                    BusInfo.getInstance().setAll(routeEditText, plateEditText, typeSpinner, accessibilitySwitch);
+                    BusInfo.getInstance().setAll(routeEditText, plateEditText, numberEditText, typeSpinner, accessibilitySwitch);
                     findViewById(R.id.main_controls).setVisibility(View.INVISIBLE);
+//                    findViewById(R.id.buzapp_logo).setVisibility(View.GONE);
+                    findViewById(R.id.main_loading_spinner).setVisibility(View.VISIBLE);
+                    findViewById(R.id.main_loading_text).setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.fragment_container, new MapFragment())
                             .commit();

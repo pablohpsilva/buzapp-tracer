@@ -12,6 +12,7 @@ public class BusInfo {
     private static BusInfo instance = new BusInfo();
     private String route;
     private String plate;
+    private String busNumber;
     private String type;
     private boolean accessibility;
 
@@ -21,13 +22,14 @@ public class BusInfo {
         return instance;
     }
 
-    public void setAll(EditText route, EditText plate, Spinner type, Switch accessibility){
-        this.setAll(route.getText().toString(), plate.getText().toString(), type.getSelectedItem().toString(), accessibility.isChecked());
+    public void setAll(EditText route, EditText plate, EditText busNumber, Spinner type, Switch accessibility){
+        this.setAll(route.getText().toString(), plate.getText().toString(), busNumber.getText().toString(), type.getSelectedItem().toString(), accessibility.isChecked());
     }
 
-    public void setAll(String route, String plate, String type, boolean accessibility){
+    public void setAll(String route, String plate, String busNumber, String type, boolean accessibility){
         setRoute(route);
         setPlate(plate);
+        setBusNumber(busNumber);
         setType(type);
         setAccessibility(accessibility);
     }
@@ -63,5 +65,13 @@ public class BusInfo {
 
     public void setAccessibility(boolean accessibility) {
         this.accessibility = accessibility;
+    }
+
+    public String getBusNumber() {
+        return busNumber;
+    }
+
+    public void setBusNumber(String busNumber) {
+        this.busNumber = busNumber;
     }
 }
