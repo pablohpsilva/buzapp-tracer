@@ -124,8 +124,9 @@ public class MapFragment extends Fragment{
     private void startServices(){
         mapManagerService = new MapManagerService(MapFragment.this);
         utils = new Utils(MapFragment.this.getActivity());
-        if(utils.checkGPS(MapFragment.this.getActivity()))
+        if(utils.checkGPS(MapFragment.this.getActivity())) {
             mapManagerService.drawUserLocation();
+        }
     }
 
     private void setMainActivityDefaults() {

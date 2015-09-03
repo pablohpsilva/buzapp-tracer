@@ -33,9 +33,9 @@ public class Bus implements IBackendJSON {
 //            this.route = route + "T131";
 //            this.id = 25;
 //        }
-        if(route.equals(""))
+        if(route.equals("")) {
             throw new NullPointerException();
-        else {
+        } else {
             this.route = route;
             this.jsonObject = new JSONObject();
             this.location = new Location("");
@@ -78,7 +78,7 @@ public class Bus implements IBackendJSON {
             }
         } else {
             if(!verifyNullSpeed(location)) {
-                if(this.speedNotNull){
+                if(this.speedNotNull) {
                     this.speedNotNull = false;
                     return this.toJSON();
                 }
