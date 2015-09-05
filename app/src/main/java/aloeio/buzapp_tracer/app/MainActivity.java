@@ -2,12 +2,16 @@ package aloeio.buzapp_tracer.app;
 
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
 import aloeio.buzapp_tracer.app.Models.BusInfo;
+import aloeio.buzapp_tracer.app.Services.BackgroundService;
 import aloeio.buzapp_tracer.app.Utils.Utils;
+
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -45,6 +49,9 @@ public class MainActivity extends FragmentActivity implements
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
+                startService(intent);
+
                 String route = routeEditText.getText().toString();
                 String plate = plateEditText.getText().toString();
                 String number = numberEditText.getText().toString();

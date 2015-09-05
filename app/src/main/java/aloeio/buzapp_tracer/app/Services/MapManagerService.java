@@ -47,6 +47,8 @@ public class MapManagerService {
             this.myLocationService = new MyLocationService(fragment,buzappMyLocationProvider);
         else
             this.myLocationService.centerMyLocation();
+
+        BackgroundService.setLocationProvider(buzappMyLocationProvider);
         this.myLocationService.followUser();
     }
 
@@ -80,6 +82,7 @@ public class MapManagerService {
     /**
      * Private methods that handles Buzapp objects
      */
+
 
     private void createStopsMarker(){
         if(this.busStopMarker == null)
