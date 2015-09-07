@@ -40,16 +40,10 @@ public class MainActivity extends FragmentActivity implements
     private Switch accessibilitySwitch;
     private Spinner typeSpinner;
     private Button startButton;
-    private static boolean setIdOnFile = false;
-    private static int idBus;
 
 
     private static String mainRoute;
 
-    public static void setIdOnFile(int idOnFile) {
-        MainActivity.setIdOnFile = true;
-        idBus = idOnFile;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,13 +86,19 @@ public class MainActivity extends FragmentActivity implements
 
                 try {
                     FileOutputStream fileout = openFileOutput("buzappRoute.txt", MODE_PRIVATE);
-                    OutputStreamWriter outputWriter=new OutputStreamWriter(fileout);
+                    OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
                     outputWriter.write(route);
+
                     outputWriter.close();
 
+                    fileout = openFileOutput("buzappId.txt", MODE_PRIVATE);
+                    outputWriter = new OutputStreamWriter(fileout);
+                    outputWriter.write(plate);
+
+                    outputWriter.close();
                     //display file saved message
-                    //Toast.makeText(getBaseContext(), "File saved successfully!",
-                      //      Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "File saved successfully!",
+                            Toast.LENGTH_SHORT).show();
 
                 } catch (Exception e) {}
 
@@ -124,28 +124,27 @@ public class MainActivity extends FragmentActivity implements
                     Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
                     startService(intent);
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for(;;) {
-                                Log.d("Thread", "Trying save id");
-                                if (setIdOnFile) {
-                                    saveId();
-                                    Log.d("Thread", "Saved");
-                                    return;
-                                } else {
-                                    try {
-                                        Thread.sleep(2000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }
-                    }).start();
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            for(;;) {
+//                                Log.d("Thread", "Trying save id");
+//                                if (setIdOnFile) {
+//                                    saveId();
+//                                    Log.d("Thread", "Saved");
+//                                    return;
+//                                } else {
+//                                    try {
+//                                        Thread.sleep(2000);
+//                                    } catch (InterruptedException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }).start();
 
                 }
-
             }
 
         });
@@ -194,22 +193,6 @@ public class MainActivity extends FragmentActivity implements
 
     public static String getMainRoute(){
         return mainRoute;
-    }
-
-    public void saveId() {
-        try {
-            FileOutputStream fileout = openFileOutput("buzappId.txt", MODE_PRIVATE);
-            OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
-            outputWriter.write(Integer.toString(idBus));
-            outputWriter.close();
-
-            //display file saved message
-            Toast.makeText(getBaseContext(), "File saved successfully ! " + idBus,
-                    Toast.LENGTH_SHORT).show();
-
-        } catch (Exception e) {}
-
-
     }
 
 //    public static int getMainId(){
