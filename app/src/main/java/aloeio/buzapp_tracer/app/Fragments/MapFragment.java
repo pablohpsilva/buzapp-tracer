@@ -1,9 +1,11 @@
 package aloeio.buzapp_tracer.app.Fragments;
 
 import aloeio.buzapp_tracer.app.R;
+import aloeio.buzapp_tracer.app.Services.BackgroundService;
 import aloeio.buzapp_tracer.app.Services.MapManagerService;
 import aloeio.buzapp_tracer.app.Utils.Utils;
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -68,6 +70,7 @@ public class MapFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
@@ -122,6 +125,7 @@ public class MapFragment extends Fragment{
     }
 
     private void startServices(){
+
         mapManagerService = new MapManagerService(MapFragment.this);
         utils = new Utils(MapFragment.this.getActivity());
         if(utils.checkGPS(MapFragment.this.getActivity())) {

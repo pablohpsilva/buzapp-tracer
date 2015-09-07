@@ -2,16 +2,31 @@ package aloeio.buzapp_tracer.app;
 
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
 import aloeio.buzapp_tracer.app.Models.BusInfo;
+import aloeio.buzapp_tracer.app.Services.BackgroundService;
+import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
 import aloeio.buzapp_tracer.app.Utils.Utils;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 
 public class MainActivity extends FragmentActivity implements
@@ -25,13 +40,38 @@ public class MainActivity extends FragmentActivity implements
     private Switch accessibilitySwitch;
     private Spinner typeSpinner;
     private Button startButton;
+    private static boolean setIdOnFile = false;
+    private static int idBus;
+
+
     private static String mainRoute;
+
+    public static void setIdOnFile(int idOnFile) {
+        MainActivity.setIdOnFile = true;
+        idBus = idOnFile;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        SharedPreferences prefs = this.getSharedPreferences(
+                "com.example.buzapp", Context.MODE_PRIVATE);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+
+
+//        if(!f.exists()) {
+//            try {
+//                f.createNewFile();
+//            } catch (IOException e) {}
+//        }
+//        if(!f2.exists()){
+//            try {
+//                f2.createNewFile();
+//            } catch (IOException e) {}
+//        }
+//
 
         routeEditText = (EditText) findViewById(R.id.main_edt_route);
         plateEditText = (EditText) findViewById(R.id.main_edt_plate);
@@ -45,9 +85,23 @@ public class MainActivity extends FragmentActivity implements
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String route = routeEditText.getText().toString();
                 String plate = plateEditText.getText().toString();
                 String number = numberEditText.getText().toString();
+
+                try {
+                    FileOutputStream fileout = openFileOutput("buzappRoute.txt", MODE_PRIVATE);
+                    OutputStreamWriter outputWriter=new OutputStreamWriter(fileout);
+                    outputWriter.write(route);
+                    outputWriter.close();
+
+                    //display file saved message
+                    //Toast.makeText(getBaseContext(), "File saved successfully!",
+                      //      Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {}
+
 
                 if(route.length() != 4)
                     Toast.makeText(MainActivity.this, "Problema. Escreva uma rota real. Exemplo: T131", Toast.LENGTH_SHORT).show();
@@ -66,7 +120,32 @@ public class MainActivity extends FragmentActivity implements
                             .add(R.id.fragment_container, new MapFragment())
                             .commit();
                 }
+
+                Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
+                startService(intent);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(;;) {
+                            Log.d("Thread", "Trying save id");
+                            if (setIdOnFile) {
+                                saveId();
+                                Log.d("Thread", "Saved");
+                                return;
+                            } else {
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }).start();
+
             }
+
         });
 
         utils = new Utils(this);
@@ -89,12 +168,15 @@ public class MainActivity extends FragmentActivity implements
 //            this.callFragment(0, null);
 //            this.setMainActivityDefaults();
         }
+
     }
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 
     private void copyMapFileIfNeeded(){
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/"+MAPZIPNAME);
@@ -110,6 +192,22 @@ public class MainActivity extends FragmentActivity implements
 
     public static String getMainRoute(){
         return mainRoute;
+    }
+
+    public void saveId() {
+        try {
+            FileOutputStream fileout = openFileOutput("buzappId.txt", MODE_PRIVATE);
+            OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
+            outputWriter.write(Integer.toString(idBus));
+            outputWriter.close();
+
+            //display file saved message
+            Toast.makeText(getBaseContext(), "File saved successfully ! " + idBus,
+                    Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {}
+
+
     }
 
 //    public static int getMainId(){

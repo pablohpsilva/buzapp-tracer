@@ -162,7 +162,12 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
         }
     }
 
+    public Bus getBusOfLocationProvider(){
+        return bus;
+    }
+
     public void startBusTracking(){
+
         if(senderTimer == null) {
             senderTimer = new Timer();
             senderTimer.scheduleAtFixedRate(new TimerTask() {

@@ -34,7 +34,6 @@ public class BusInfo {
         setAccessibility(accessibility);
     }
 
-
     public String getRoute() {
         return route;
     }

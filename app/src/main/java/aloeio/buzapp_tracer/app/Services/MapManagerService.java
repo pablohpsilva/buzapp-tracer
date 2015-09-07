@@ -6,6 +6,8 @@ import aloeio.buzapp_tracer.app.R;
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyMarker;
+
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.bonuspack.overlays.Marker;
@@ -47,6 +49,10 @@ public class MapManagerService {
             this.myLocationService = new MyLocationService(fragment,buzappMyLocationProvider);
         else
             this.myLocationService.centerMyLocation();
+
+        BackgroundService.setLocationProvider(buzappMyLocationProvider);
+
+
         this.myLocationService.followUser();
     }
 
@@ -80,6 +86,7 @@ public class MapManagerService {
     /**
      * Private methods that handles Buzapp objects
      */
+
 
     private void createStopsMarker(){
         if(this.busStopMarker == null)
