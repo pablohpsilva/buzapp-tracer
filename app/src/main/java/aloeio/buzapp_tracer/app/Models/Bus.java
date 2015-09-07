@@ -131,7 +131,6 @@ public class Bus implements IBackendJSON {
                     String result = httpUtils.getGZippedRequest(urlGetServiceID + route);
                     id = result;
 
-                    MainActivity.setIdOnFile(id);
 //                    File f1 = new File("id.txt");
 //                    FileWriter fr = new FileWriter(f1);
 //                    BufferedWriter bw = new BufferedWriter(fr);

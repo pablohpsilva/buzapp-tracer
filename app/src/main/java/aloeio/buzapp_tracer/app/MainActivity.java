@@ -40,16 +40,10 @@ public class MainActivity extends FragmentActivity implements
     private Switch accessibilitySwitch;
     private Spinner typeSpinner;
     private Button startButton;
-    private static boolean setIdOnFile = false;
-    private static int idBus;
 
 
     private static String mainRoute;
 
-    public static void setIdOnFile(int idOnFile) {
-        MainActivity.setIdOnFile = true;
-        idBus = idOnFile;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,6 +88,8 @@ public class MainActivity extends FragmentActivity implements
                     FileOutputStream fileout = openFileOutput("buzappRoute.txt", MODE_PRIVATE);
                     OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
                     outputWriter.write(route);
+
+                    outputWriter.close();
 
                     fileout = openFileOutput("buzappId.txt", MODE_PRIVATE);
                     outputWriter = new OutputStreamWriter(fileout);
