@@ -103,46 +103,48 @@ public class MainActivity extends FragmentActivity implements
                 } catch (Exception e) {}
 
 
-                if(route.length() != 4)
+                if(route.length() != 4) {
                     Toast.makeText(MainActivity.this, "Problema. Escreva uma rota real. Exemplo: T131", Toast.LENGTH_SHORT).show();
-                else if(plate.length() != 7)
+                } else if(plate.length() != 7) {
                     Toast.makeText(MainActivity.this, "Problema. Escreva uma placa real. Exemplo: ABC1234", Toast.LENGTH_SHORT).show();
-                else if(isNumeric(number))
+                } else if(!isNumeric(number)) {
                     Toast.makeText(MainActivity.this, "Problema. O Numero do onibus deve ser somente numeros.", Toast.LENGTH_SHORT).show();
-                else {
+                } else {
 //                    mainRoute = route;
                     BusInfo.getInstance().setAll(routeEditText, plateEditText, numberEditText, typeSpinner, accessibilitySwitch);
                     findViewById(R.id.main_controls).setVisibility(View.INVISIBLE);
 //                    findViewById(R.id.buzapp_logo).setVisibility(View.GONE);
                     findViewById(R.id.main_loading_spinner).setVisibility(View.VISIBLE);
                     findViewById(R.id.main_loading_text).setVisibility(View.VISIBLE);
+                    findViewById(R.id.scroll_view_menu).setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.fragment_container, new MapFragment())
                             .commit();
-                }
 
-                Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
-                startService(intent);
+                    Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
+                    startService(intent);
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        for(;;) {
-                            Log.d("Thread", "Trying save id");
-                            if (setIdOnFile) {
-                                saveId();
-                                Log.d("Thread", "Saved");
-                                return;
-                            } else {
-                                try {
-                                    Thread.sleep(2000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for(;;) {
+                                Log.d("Thread", "Trying save id");
+                                if (setIdOnFile) {
+                                    saveId();
+                                    Log.d("Thread", "Saved");
+                                    return;
+                                } else {
+                                    try {
+                                        Thread.sleep(2000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         }
-                    }
-                }).start();
+                    }).start();
+
+                }
 
             }
 
