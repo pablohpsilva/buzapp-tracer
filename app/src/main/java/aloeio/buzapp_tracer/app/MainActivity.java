@@ -5,17 +5,25 @@ import aloeio.buzapp_tracer.app.Models.BusInfo;
 import aloeio.buzapp_tracer.app.Services.BackgroundService;
 import aloeio.buzapp_tracer.app.Utils.Utils;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 public class MainActivity extends FragmentActivity implements
@@ -29,13 +37,33 @@ public class MainActivity extends FragmentActivity implements
     private Switch accessibilitySwitch;
     private Spinner typeSpinner;
     private Button startButton;
+    private File f = new File("id.txt");
+    private File f2 = new File("route.txt");
+
+
     private static String mainRoute;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        SharedPreferences prefs = this.getSharedPreferences(
+                "com.example.buzapp", Context.MODE_PRIVATE);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+
+
+//        if(!f.exists()) {
+//            try {
+//                f.createNewFile();
+//            } catch (IOException e) {}
+//        }
+//        if(!f2.exists()){
+//            try {
+//                f2.createNewFile();
+//            } catch (IOException e) {}
+//        }
+//
 
         routeEditText = (EditText) findViewById(R.id.main_edt_route);
         plateEditText = (EditText) findViewById(R.id.main_edt_plate);
@@ -45,16 +73,26 @@ public class MainActivity extends FragmentActivity implements
         startButton = (Button) findViewById(R.id.main_btn_start);
         BusInfo.getInstance();
 
+
+
         routeEditText.setText("T131");
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
-                startService(intent);
 
                 String route = routeEditText.getText().toString();
                 String plate = plateEditText.getText().toString();
                 String number = numberEditText.getText().toString();
+
+                try {
+                    FileWriter fr = new FileWriter(f2);
+                    BufferedWriter bw = new BufferedWriter(fr);
+
+                    bw.write(route);
+                    bw.close();
+                    Log.d("Main","Salvei o route");
+                } catch (IOException e) {}
+
 
                 if(route.length() != 4)
                     Toast.makeText(MainActivity.this, "Problema. Escreva uma rota real. Exemplo: T131", Toast.LENGTH_SHORT).show();
@@ -73,6 +111,9 @@ public class MainActivity extends FragmentActivity implements
                             .add(R.id.fragment_container, new MapFragment())
                             .commit();
                 }
+
+                Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
+                startService(intent);
             }
         });
 

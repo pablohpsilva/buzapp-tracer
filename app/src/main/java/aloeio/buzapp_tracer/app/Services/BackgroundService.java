@@ -3,12 +3,14 @@ package aloeio.buzapp_tracer.app.Services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,6 +20,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import aloeio.buzapp_tracer.app.MainActivity;
 import aloeio.buzapp_tracer.app.Models.Bus;
 import aloeio.buzapp_tracer.app.Models.BusInfo;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
@@ -39,8 +45,8 @@ public class BackgroundService extends Service {
     public static final String BROADCAST_ACTION = "Service Back";
 
     private static String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/receivebus";
-    private static String urlGetServiceID = "http://buzapp-services.aloeio.com/busweb/tracer/generatedid/";
     private static final String CODEPAGE = "UTF-8";
+    private static final Integer TIMEOUT = 6500;
 
     private static final int TWO_MINUTES = 1000 * 60 * 2;
 
@@ -48,7 +54,9 @@ public class BackgroundService extends Service {
     public MyLocationListener listener;
     private static BusInfo myBusInfo;
     private static Bus myBus;
-    private static int myId;
+    private int i = 0;
+    private static String route;
+    private static int myId = 0;
     private static MyLocationProvider myLocationProvider;
     private static Location myLocation;
     public Location previousBestLocation = null;
@@ -57,13 +65,12 @@ public class BackgroundService extends Service {
     int counter = 0;
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate(){
         super.onCreate();
         intent = new Intent(BROADCAST_ACTION);
         myBusInfo = BusInfo.getInstance();
-        if (android.os.Build.VERSION.SDK_INT > 9)
-        {
+        route = myBusInfo.getRoute();
+        if (android.os.Build.VERSION.SDK_INT > 9){
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
@@ -71,22 +78,20 @@ public class BackgroundService extends Service {
 
     public static void setLocationProvider(MyLocationProvider mp){
         myLocationProvider = mp;
-        myBus = myLocationProvider.getBusOfLocationProvider();
-        myId = myBus.getId();
+        myId = myLocationProvider.getBusOfLocationProvider().getId();
 
     }
+
     @Override
-    public void onStart(Intent intent, int startId)
-    {
+    public void onStart(Intent intent, int startId){
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         listener = new MyLocationListener();
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, listener);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, listener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
     }
 
     @Override
-    public IBinder onBind(Intent intent)
-    {
+    public IBinder onBind(Intent intent){
         return null;
     }
 
@@ -161,6 +166,7 @@ public class BackgroundService extends Service {
                     runnable.run();
                     try {
                         Thread.sleep(2000);
+
                     } catch (InterruptedException e) {
 
                     }
@@ -174,11 +180,9 @@ public class BackgroundService extends Service {
     }
 
 
-    public class MyLocationListener implements LocationListener
-    {
+    public class MyLocationListener implements LocationListener{
 
-        public void onLocationChanged(final Location loc)
-        {
+        public void onLocationChanged(final Location loc){
             Log.d("****", "Location changed");
             if(isBetterLocation(loc, previousBestLocation)) {
                 myLocation = loc;
@@ -189,8 +193,8 @@ public class BackgroundService extends Service {
                 intent.putExtra("Latitude", loc.getLatitude());
                 intent.putExtra("Longitude", loc.getLongitude());
                 intent.putExtra("Provider", loc.getProvider());
-                sendToServer();
                 sendBroadcast(intent);
+                sendToServer();
 
             }
         }
@@ -219,22 +223,24 @@ public class BackgroundService extends Service {
             Log.d("BackgroundService", "sending To Server!");
             JSONObject jo = new JSONObject();
             InputStream inputStream = null;
-            HttpClient httpclient = new DefaultHttpClient();
+            HttpClient httpclient = new DefaultHttpClient(createHttpParams());
             HttpPost httpPost = new HttpPost(urlPostBusLocation);
 
             String json = "";
-            jo.put("linha", myBusInfo.getRoute());
+            jo.put("linha", route);
             jo.put("id", myId);
             jo.put("velocity", myLocation.getSpeed());
             jo.put("latitude", myLocation.getLatitude());
             jo.put("longitude", myLocation.getLongitude());
 
-            json = jo.toString();
 
+            json = jo.toString();
+            Log.d("BackService", json);
             StringEntity se = new StringEntity(json, CODEPAGE);
 
             httpPost.setHeader(HTTP.CONTENT_TYPE, "application/json");
             httpPost.setHeader("Accept", "application/json");
+            httpPost.setEntity(se);
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
@@ -254,6 +260,13 @@ public class BackgroundService extends Service {
         } catch (IOException e) {
             Log.d("BackgroundService", "sendToServer " + e);
         }
+    }
+
+    public static HttpParams createHttpParams(){
+        HttpParams httpParameters = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT);
+        HttpConnectionParams.setSoTimeout(httpParameters, TIMEOUT);
+        return httpParameters;
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
