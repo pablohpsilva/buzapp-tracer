@@ -221,9 +221,10 @@ public class BackgroundService extends Service {
     }
 
 
-    public class MyLocationListener implements LocationListener{
+    public class MyLocationListener
+            implements LocationListener {
 
-        public void onLocationChanged(final Location loc){
+        public void onLocationChanged(final Location loc) {
             Log.d("****", "Location changed");
 
             if(isBetterLocation(loc, previousBestLocation)) {
@@ -241,22 +242,17 @@ public class BackgroundService extends Service {
             }
         }
 
-        public void onProviderDisabled(String provider)
-        {
+        public void onProviderDisabled(String provider) {
             Toast.makeText( getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT ).show();
         }
 
 
-        public void onProviderEnabled(String provider)
-        {
+        public void onProviderEnabled(String provider) {
             Toast.makeText(getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
         }
 
 
-        public void onStatusChanged(String provider, int status, Bundle extras)
-        {
-
-        }
+        public void onStatusChanged(String provider, int status, Bundle extras) { }
 
     }
 
@@ -288,11 +284,7 @@ public class BackgroundService extends Service {
 
             inputStream = httpResponse.getEntity().getContent();
 
-            String result;
-            if(inputStream != null)
-                result = convertInputStreamToString(inputStream);
-            else
-                result = "Did not work!";
+            String result = (inputStream != null) ? convertInputStreamToString(inputStream) : "Did not work!";
 
             Log.d("BackService", result);
 
