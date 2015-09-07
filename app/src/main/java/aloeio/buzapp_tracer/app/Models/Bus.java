@@ -24,6 +24,9 @@ public class Bus implements IBackendJSON {
     private boolean speedNotNull = true;
     private HttpUtils httpUtils;
 
+    public Location getLocation(){
+        return location;
+    }
     public Bus(String route){
 //        if(route != null) {
 //            this.route = route + "";
@@ -52,6 +55,11 @@ public class Bus implements IBackendJSON {
 //            httpUtils.postGZippedRequest(urlPostBusLocation, json);
             Log.d("Bus",json.toString());
         }
+    }
+
+
+    public int getId(){
+        return id;
     }
 
     @Override
