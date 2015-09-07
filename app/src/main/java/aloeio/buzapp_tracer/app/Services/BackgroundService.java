@@ -28,9 +28,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 import aloeio.buzapp_tracer.app.MainActivity;
 import aloeio.buzapp_tracer.app.Models.Bus;
@@ -60,6 +65,7 @@ public class BackgroundService extends Service {
     private static MyLocationProvider myLocationProvider;
     private static Location myLocation;
     public Location previousBestLocation = null;
+    static final int READ_BLOCK_SIZE = 100;
 
     Intent intent;
     int counter = 0;
@@ -68,8 +74,12 @@ public class BackgroundService extends Service {
     public void onCreate(){
         super.onCreate();
         intent = new Intent(BROADCAST_ACTION);
-        myBusInfo = BusInfo.getInstance();
-        route = myBusInfo.getRoute();
+
+        route = getDataFromFile("buzappRoute.txt");
+
+        Log.d("Dados","Meu id" + myId);
+        Log.d("Dados","Minha rota" + route);
+
         if (android.os.Build.VERSION.SDK_INT > 9){
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -79,7 +89,10 @@ public class BackgroundService extends Service {
     public static void setLocationProvider(MyLocationProvider mp){
         myLocationProvider = mp;
         myId = myLocationProvider.getBusOfLocationProvider().getId();
+    }
 
+    public static MyLocationProvider getLocationProvider() {
+        return myLocationProvider;
     }
 
     @Override
@@ -88,12 +101,15 @@ public class BackgroundService extends Service {
         listener = new MyLocationListener();
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
+        i++;
     }
+
 
     @Override
     public IBinder onBind(Intent intent){
         return null;
     }
+
 
     protected boolean isBetterLocation(Location location, Location currentBestLocation) {
         if (currentBestLocation == null) {
@@ -179,17 +195,43 @@ public class BackgroundService extends Service {
         return t;
     }
 
+    public String getDataFromFile(String file) {
+        try {
+            FileInputStream fileIn = openFileInput(file);
+            InputStreamReader InputRead = new InputStreamReader(fileIn);
+
+            char[] inputBuffer= new char[READ_BLOCK_SIZE];
+            String s = "";
+            int charRead;
+
+            while ((charRead = InputRead.read(inputBuffer)) > 0) {
+                // char to string conversion
+                String readstring = String.copyValueOf(inputBuffer,0,charRead);
+                s += readstring;
+            }
+            InputRead.close();
+            Toast.makeText(getBaseContext(), s,Toast.LENGTH_SHORT).show();
+            return s;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+
+    }
+
 
     public class MyLocationListener implements LocationListener{
 
         public void onLocationChanged(final Location loc){
             Log.d("****", "Location changed");
+
             if(isBetterLocation(loc, previousBestLocation)) {
                 myLocation = loc;
                 loc.getLatitude();
                 loc.getLongitude();
-                Log.d("BackgroundService", "Longitude = " + loc.getLongitude());
-                Log.d("BackgroundService", "Latitude = " + loc.getLatitude());
+                //Log.d("BackgroundService", "Longitude = " + loc.getLongitude());
+                //Log.d("BackgroundService", "Latitude = " + loc.getLatitude());
                 intent.putExtra("Latitude", loc.getLatitude());
                 intent.putExtra("Longitude", loc.getLongitude());
                 intent.putExtra("Provider", loc.getProvider());
@@ -218,13 +260,18 @@ public class BackgroundService extends Service {
 
     }
 
-    private static void sendToServer() {
+    private void sendToServer() {
         try {
-            Log.d("BackgroundService", "sending To Server!");
+            //Log.d("BackgroundService", "sending To Server!");
             JSONObject jo = new JSONObject();
             InputStream inputStream = null;
             HttpClient httpclient = new DefaultHttpClient(createHttpParams());
             HttpPost httpPost = new HttpPost(urlPostBusLocation);
+
+            if(myId == 0 ){
+                myId = Integer.parseInt(getDataFromFile("buzappId.txt"));
+
+            }
 
             String json = "";
             jo.put("linha", route);
