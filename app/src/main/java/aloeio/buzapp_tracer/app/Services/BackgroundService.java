@@ -12,6 +12,7 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -29,10 +30,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 
 import aloeio.buzapp_tracer.app.Models.Bus;
 import aloeio.buzapp_tracer.app.Models.BusInfo;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
+import aloeio.buzapp_tracer.app.Utils.HttpUtils;
 
 /**
  * Created by root on 05/09/15.
@@ -43,6 +46,7 @@ public class BackgroundService
     public static final String BROADCAST_ACTION = "Service Back";
 
     private static String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/receivebus";
+    private static String urlRemoveBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/removebus/{linha}/{id}";
     private static final String CODEPAGE = "UTF-8";
     private static final Integer TIMEOUT = 6500;
 
@@ -61,8 +65,9 @@ public class BackgroundService
     static final int READ_BLOCK_SIZE = 100;
 
     private static int timerCounter = 0;
+    private boolean hasStoped = false;
     private static final int TIME_UPDATE = 2000;
-    private static final int TIME_UPDATE_LIMIT = 600000;
+    private static final int TIME_UPDATE_LIMIT = 2000;
 
     Intent intent;
     int counter = 0;
@@ -234,11 +239,34 @@ public class BackgroundService
                 intent.putExtra("Provider", loc.getProvider());
                 sendBroadcast(intent);
 
-                if(loc.getLatitude() != myLocation.getLatitude() && loc.getLongitude() != myLocation.getLongitude()) {
-                    myLocation = loc;
-                    if(myLocation.getSpeed() > 0.0) {
+                // Do I have a current location?
+                if(myLocation != null) {
+                    // Check if Lat x Lon from old vs. new location and traveling speed. If they are not equals or zero, continue.
+//                    if (loc.getLatitude() != myLocation.getLatitude() && loc.getLongitude() != myLocation.getLongitude() && loc.getSpeed() > 0.0) {
+                    if (loc.getLatitude() != myLocation.getLatitude() && loc.getLongitude() != myLocation.getLongitude()) {
+                        myLocation = loc;
                         sendToServer();
+                        timerCounter = 0;
+                        hasStoped = false;
+                    } else { // If the bus has stopped, count its position. Stop service if needed.
+                        timerCounter += TIME_UPDATE;
+                        if(timerCounter >= TIME_UPDATE_LIMIT && !hasStoped) {
+                            try {
+                                hasStoped = true;
+                                HttpUtils httpUtils = new HttpUtils();
+                                String result = httpUtils.getRequest(urlRemoveBusLocation.replace("{linha}", route).replace("{id}", myId));
+                                System.out.println(result);
+                            } catch (HttpException e) {
+                                e.printStackTrace();
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
+                } else {
+                    myLocation = loc;
                 }
 
             }
@@ -259,14 +287,9 @@ public class BackgroundService
         try {
             //Log.d("BackgroundService", "sending To Server!");
             JSONObject jo = new JSONObject();
-            InputStream inputStream = null;
             HttpClient httpclient = new DefaultHttpClient(createHttpParams());
             HttpPost httpPost = new HttpPost(urlPostBusLocation);
 
-            if (myId == 0) {
-                myId = Integer.parseInt(getDataFromFile("buzappId.txt"));
-            }
-            String json = "";
             jo.put("linha", route);
             jo.put("id", myId);
             jo.put("velocity", myLocation.getSpeed());
@@ -274,7 +297,7 @@ public class BackgroundService
             jo.put("longitude", myLocation.getLongitude());
 
 
-            json = jo.toString();
+            String json = jo.toString();
             Log.d("BackService", json);
             StringEntity se = new StringEntity(json, CODEPAGE);
 
@@ -284,7 +307,7 @@ public class BackgroundService
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            inputStream = httpResponse.getEntity().getContent();
+            InputStream inputStream = httpResponse.getEntity().getContent();
 
             String result = (inputStream != null) ? convertInputStreamToString(inputStream) : "Did not work!";
 
