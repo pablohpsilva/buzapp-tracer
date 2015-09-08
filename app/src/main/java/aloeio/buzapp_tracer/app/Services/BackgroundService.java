@@ -3,15 +3,12 @@ package aloeio.buzapp_tracer.app.Services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.StrictMode;
-import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,16 +25,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
-import aloeio.buzapp_tracer.app.MainActivity;
 import aloeio.buzapp_tracer.app.Models.Bus;
 import aloeio.buzapp_tracer.app.Models.BusInfo;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
@@ -45,7 +37,8 @@ import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
 /**
  * Created by root on 05/09/15.
  */
-public class BackgroundService extends Service {
+public class BackgroundService
+        extends Service {
 
     public static final String BROADCAST_ACTION = "Service Back";
 
@@ -66,6 +59,10 @@ public class BackgroundService extends Service {
     private static Location myLocation;
     public Location previousBestLocation = null;
     static final int READ_BLOCK_SIZE = 100;
+
+    private static int timerCounter = 0;
+    private static final int TIME_UPDATE = 2000;
+    private static final int TIME_UPDATE_LIMIT = 600000;
 
     Intent intent;
     int counter = 0;
@@ -221,13 +218,13 @@ public class BackgroundService extends Service {
     }
 
 
-    public class MyLocationListener implements LocationListener{
+    public class MyLocationListener
+            implements LocationListener {
 
         public void onLocationChanged(final Location loc){
             Log.d("****", "Location changed");
 
             if(isBetterLocation(loc, previousBestLocation)) {
-                myLocation = loc;
                 loc.getLatitude();
                 loc.getLongitude();
                 //Log.d("BackgroundService", "Longitude = " + loc.getLongitude());
@@ -236,27 +233,27 @@ public class BackgroundService extends Service {
                 intent.putExtra("Longitude", loc.getLongitude());
                 intent.putExtra("Provider", loc.getProvider());
                 sendBroadcast(intent);
-                sendToServer();
+
+                if(loc.getLatitude() != myLocation.getLatitude() && loc.getLongitude() != myLocation.getLongitude()) {
+                    myLocation = loc;
+                    if(myLocation.getSpeed() > 0.0) {
+                        sendToServer();
+                    }
+                }
 
             }
         }
 
-        public void onProviderDisabled(String provider)
-        {
+        public void onProviderDisabled(String provider) {
             Toast.makeText( getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT ).show();
         }
 
 
-        public void onProviderEnabled(String provider)
-        {
+        public void onProviderEnabled(String provider) {
             Toast.makeText(getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
         }
 
-
-        public void onStatusChanged(String provider, int status, Bundle extras)
-        {
-
-        }
+        public void onStatusChanged(String provider, int status, Bundle extras) { }
 
     }
 
@@ -268,7 +265,7 @@ public class BackgroundService extends Service {
             HttpClient httpclient = new DefaultHttpClient(createHttpParams());
             HttpPost httpPost = new HttpPost(urlPostBusLocation);
 
-            if(myId == 0 ){
+            if (myId == 0) {
                 myId = Integer.parseInt(getDataFromFile("buzappId.txt"));
 
             }
@@ -293,14 +290,9 @@ public class BackgroundService extends Service {
 
             inputStream = httpResponse.getEntity().getContent();
 
-            String result;
-            if(inputStream != null)
-                result = convertInputStreamToString(inputStream);
-            else
-                result = "Did not work!";
+            String result = (inputStream != null) ? convertInputStreamToString(inputStream) : "Did not work!";
 
             Log.d("BackService", result);
-
 
         } catch (JSONException e) {
             Log.d("BackgroundService", "sendToServer " + e);;
