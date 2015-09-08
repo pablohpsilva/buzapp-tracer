@@ -54,7 +54,7 @@ public class BackgroundService
     private static Bus myBus;
     private int i = 0;
     private static String route;
-    private static int myId = 0;
+    private static String myId;
     private static MyLocationProvider myLocationProvider;
     private static Location myLocation;
     public Location previousBestLocation = null;
@@ -73,6 +73,7 @@ public class BackgroundService
         intent = new Intent(BROADCAST_ACTION);
 
         route = getDataFromFile("buzappRoute.txt");
+        myId = getDataFromFile("buzappId.txt");
 
         Log.d("Dados","Meu id" + myId);
         Log.d("Dados","Minha rota" + route);
@@ -85,7 +86,6 @@ public class BackgroundService
 
     public static void setLocationProvider(MyLocationProvider mp){
         myLocationProvider = mp;
-        myId = myLocationProvider.getBusOfLocationProvider().getId();
     }
 
     public static MyLocationProvider getLocationProvider() {
@@ -96,8 +96,8 @@ public class BackgroundService
     public void onStart(Intent intent, int startId){
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         listener = new MyLocationListener();
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, listener);
         i++;
     }
 
@@ -221,7 +221,7 @@ public class BackgroundService
     public class MyLocationListener
             implements LocationListener {
 
-        public void onLocationChanged(final Location loc){
+        public void onLocationChanged(final Location loc) {
             Log.d("****", "Location changed");
 
             if(isBetterLocation(loc, previousBestLocation)) {
@@ -248,11 +248,9 @@ public class BackgroundService
             Toast.makeText( getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT ).show();
         }
 
-
         public void onProviderEnabled(String provider) {
             Toast.makeText(getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
         }
-
         public void onStatusChanged(String provider, int status, Bundle extras) { }
 
     }
@@ -267,9 +265,7 @@ public class BackgroundService
 
             if (myId == 0) {
                 myId = Integer.parseInt(getDataFromFile("buzappId.txt"));
-
             }
-
             String json = "";
             jo.put("linha", route);
             jo.put("id", myId);

@@ -32,7 +32,7 @@ public class Bus implements IBackendJSON {
     private String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/receivebus";
     private String urlGetServiceID = "http://buzapp-services.aloeio.com/busweb/tracer/generatedid/";
     private String route;
-    private int id = -1;
+    private String id = "-1";
     private Location location;
     private JSONObject jsonObject;
     private boolean speedNotNull = true;
@@ -63,7 +63,8 @@ public class Bus implements IBackendJSON {
 
     public void sendJSON(Location location) throws JSONException, IOException, NullPointerException {
         JSONObject json = this.prepareJSON(location);
-        if(json != null && this.id != -1) {
+        String str = "0";
+        if(json != null && !this.id.equals("-1")) {
             httpUtils.postRequest(urlPostBusLocation, json);
             System.out.println(json.toString());
 //            httpUtils.postGZippedRequest(urlPostBusLocation, json);
@@ -72,7 +73,7 @@ public class Bus implements IBackendJSON {
     }
 
 
-    public int getId(){
+    public String getId(){
         return id;
     }
 
@@ -128,9 +129,8 @@ public class Bus implements IBackendJSON {
             public void run() {
                 try {
                     String result = httpUtils.getGZippedRequest(urlGetServiceID + route);
-                    id = Integer.parseInt(result);
+                    id = result;
 
-                    MainActivity.setIdOnFile(id);
 //                    File f1 = new File("id.txt");
 //                    FileWriter fr = new FileWriter(f1);
 //                    BufferedWriter bw = new BufferedWriter(fr);
