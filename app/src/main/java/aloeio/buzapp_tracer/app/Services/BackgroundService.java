@@ -43,45 +43,39 @@ import aloeio.buzapp_tracer.app.Utils.HttpUtils;
 public class BackgroundService
         extends Service {
 
+    public LocationManager locationManager;
+    public MyLocationListener listener;
+    public Location previousBestLocation = null;
     public static final String BROADCAST_ACTION = "Service Back";
 
     private static String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/receivebus";
     private static String urlRemoveBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/removebus/{linha}/{id}";
     private static final String CODEPAGE = "UTF-8";
     private static final Integer TIMEOUT = 6500;
-
     private static final int TWO_MINUTES = 1000 * 60 * 2;
-
-    public LocationManager locationManager;
-    public MyLocationListener listener;
-    private static BusInfo myBusInfo;
-    private static Bus myBus;
-    private int i = 0;
     private static String route;
     private static String myId;
     private static MyLocationProvider myLocationProvider;
     private static Location myLocation;
-    public Location previousBestLocation = null;
-    static final int READ_BLOCK_SIZE = 100;
-
     private static int timerCounter = 0;
     private boolean hasStoped = false;
     private static final int TIME_UPDATE = 2000;
     private static final int TIME_UPDATE_LIMIT = 2000;
+    private static String CLASS_NAME;
 
     Intent intent;
-    int counter = 0;
+    static final int READ_BLOCK_SIZE = 100;
+    int i = 0;
 
     @Override
     public void onCreate(){
         super.onCreate();
+        CLASS_NAME = BackgroundService.this.getClass().getName();
         intent = new Intent(BROADCAST_ACTION);
-
         route = getDataFromFile("buzappRoute.txt");
         myId = getDataFromFile("buzappId.txt");
-
-        Log.d("Dados","Meu id" + myId);
-        Log.d("Dados","Minha rota" + route);
+        Log.d(CLASS_NAME,"Meu id: " + myId);
+        Log.d(CLASS_NAME,"Minha rota: " + route);
 
         if (android.os.Build.VERSION.SDK_INT > 9){
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -171,7 +165,7 @@ public class BackgroundService
     public void onDestroy() {
         // handler.removeCallbacks(sendUpdatesToUI);
         super.onDestroy();
-        Log.v("STOP_SERVICE", "DONE");
+        Log.v(CLASS_NAME, " !!! STOPPED !!! ");
         locationManager.removeUpdates(listener);
     }
 
@@ -184,12 +178,11 @@ public class BackgroundService
                     runnable.run();
                     try {
                         Thread.sleep(2000);
-
                     } catch (InterruptedException e) {
-
+                        Log.v(CLASS_NAME, "performOnBackgroundThread Exception");
                     }
                 } finally {
-
+                    //
                 }
             }
         };
@@ -227,7 +220,7 @@ public class BackgroundService
             implements LocationListener {
 
         public void onLocationChanged(final Location loc) {
-            Log.d("****", "Location changed");
+            Log.d(CLASS_NAME, "Location changed");
 
             if(isBetterLocation(loc, previousBestLocation)) {
                 loc.getLatitude();
@@ -311,7 +304,7 @@ public class BackgroundService
 
             String result = (inputStream != null) ? convertInputStreamToString(inputStream) : "Did not work!";
 
-            Log.d("BackService", result);
+            Log.d(CLASS_NAME, result);
 
         } catch (JSONException e) {
             Log.d("BackgroundService", "sendToServer " + e);;
