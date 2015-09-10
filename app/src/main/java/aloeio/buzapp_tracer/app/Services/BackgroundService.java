@@ -291,7 +291,7 @@ public class BackgroundService
             HttpPost httpPost = new HttpPost(urlPostBusLocation);
 
             jo.put("linha", route);
-            jo.put("id", myId);
+            jo.put("placa", myId);
             jo.put("velocity", myLocation.getSpeed());
             jo.put("latitude", myLocation.getLatitude());
             jo.put("longitude", myLocation.getLongitude());

@@ -143,7 +143,6 @@ public class MainActivity extends FragmentActivity implements
         });
 
         utils = new Utils(this);
-        copyMapFileIfNeeded();
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -169,15 +168,6 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
-
-
-    private void copyMapFileIfNeeded(){
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/"+MAPZIPNAME);
-        if(!file.exists()){
-            // If user does not have the map, create a copy on osmdroid folder, then.
-            utils.copyMapFile("file://android_asset/", MAPZIPNAME, Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/", MainActivity.this);
-        }
     }
 
     private boolean isNumeric(String str) {
