@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Buzapp-tracer</string>
+    <string name="app_name">Buzapp Tracker</string>
     <string name="multiple_txt_back">Voltar</string>
     <string name="home_edt_search_hint">Pesquisar linha</string>
     <string name="action_settings">Settings</string>
