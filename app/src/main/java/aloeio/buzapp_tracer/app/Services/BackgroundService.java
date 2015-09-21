@@ -1,14 +1,22 @@
 package aloeio.buzapp_tracer.app.Services;
 
+import aloeio.buzapp_tracer.app.Models.DeviceInfo;
+import aloeio.buzapp_tracer.app.Utils.GCMConstants;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.StrictMode;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,11 +33,7 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URISyntaxException;
 
 import aloeio.buzapp_tracer.app.Models.Bus;
@@ -50,6 +54,7 @@ public class BackgroundService
 
     private static String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/receivebus";
     private static String urlRemoveBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/removebus/{linha}/{id}";
+    private static final String urlReportDeviceInfo = "http://buzapp-services.aloeio.com/busweb/tracer/getbus";
     private static final String CODEPAGE = "UTF-8";
     private static final Integer TIMEOUT = 6500;
     private static final int TWO_MINUTES = 1000 * 60 * 2;
@@ -62,6 +67,10 @@ public class BackgroundService
     private static final int TIME_UPDATE = 2000;
     private static final int TIME_UPDATE_LIMIT = 2000;
     private static String CLASS_NAME;
+    private static TelephonyManager tManager;
+    private static WifiManager wManager;
+    private static AccountManager manager;
+    private static Context context;
 
     Intent intent;
     static final int READ_BLOCK_SIZE = 100;
@@ -74,6 +83,12 @@ public class BackgroundService
         intent = new Intent(BROADCAST_ACTION);
         route = getDataFromFile("buzappRoute.txt");
         myId = getDataFromFile("buzappId.txt");
+
+        context = this;
+        manager = AccountManager.get(this);
+        tManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        wManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
         Log.d(CLASS_NAME,"Meu id: " + myId);
         Log.d(CLASS_NAME,"Minha rota: " + route);
 
@@ -329,6 +344,99 @@ public class BackgroundService
 
         inputStream.close();
         return result;
+
+    }
+
+    public static JSONObject getDeviceInfo()
+    {
+
+        JSONObject jsonObject = new JSONObject();
+        String uuid = tManager.getDeviceId();
+        String serial = tManager.getDeviceId();
+        WifiInfo info = wManager.getConnectionInfo();
+        String macAddress = info.getMacAddress();
+        String simSerialNumber = tManager.getSimSerialNumber();
+        String simNumber = tManager.getLine1Number();
+        Account[] accounts = manager.getAccountsByType("com.google");
+        String email=accounts[0].name;
+        SharedPreferences prefs = context.getSharedPreferences("userDetails",
+                Context.MODE_PRIVATE);
+        String registrationId = prefs.getString(GCMConstants.REG_ID, "");
+
+
+        try {
+            jsonObject = new DeviceInfo(uuid, serial, macAddress, simSerialNumber, simNumber, email,registrationId).toJSON();
+            Log.d("JSON: ",jsonObject.toString());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        sendDeviceInfoToServer(jsonObject);
+        return jsonObject;
+    }
+
+    public static void updateBusInfo(String newRoute,String newID)
+    {
+        route=newRoute;
+        myId=newID;
+        try {
+            FileOutputStream fileout = context.openFileOutput("buzappRoute.txt", MODE_PRIVATE);
+            OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
+            outputWriter.write(route);
+
+            outputWriter.close();
+
+            fileout = context.openFileOutput("buzappId.txt", MODE_PRIVATE);
+            outputWriter = new OutputStreamWriter(fileout);
+            outputWriter.write(myId);
+
+            outputWriter.close();
+            //display file saved message
+            Toast.makeText(context, "File updated successfully!",
+                    Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {}
+    }
+
+    public static void launchMobizen()
+    {
+        //mobizen comum
+        //Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.rsupport.mvagent");
+        //mobizen for samsung
+        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.rsupport.mobizen.sec");
+        if(launchIntent!=null)
+            context.startActivity(launchIntent);
+    }
+
+    private static void sendDeviceInfoToServer(JSONObject jsonObject)
+    {
+        try {
+            //Log.d("BackgroundService", "sending To Server!");
+
+            HttpClient httpclient = new DefaultHttpClient(createHttpParams());
+            HttpPost httpPost = new HttpPost(urlReportDeviceInfo);
+
+
+            String json = jsonObject.toString();
+            Log.d("BackService DEvice Info", json);
+            StringEntity se = new StringEntity(json, CODEPAGE);
+
+            httpPost.setHeader(HTTP.CONTENT_TYPE, "application/json");
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setEntity(se);
+
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            InputStream inputStream = httpResponse.getEntity().getContent();
+            String result = (inputStream != null) ? convertInputStreamToString(inputStream) : "Did not work!";
+
+            Log.d(CLASS_NAME, result);
+
+        } catch (IOException e) {
+            Log.d("Background Device Info", "sendToServer " + e);
+        }
 
     }
 
