@@ -13,13 +13,18 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.StrictMode;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -54,7 +59,7 @@ public class BackgroundService
 
     private static String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/receivebus";
     private static String urlRemoveBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/removebus/{linha}/{id}";
-    private static final String urlReportDeviceInfo = "http://buzapp-services.aloeio.com/busweb/tracer/getbus";
+    private static final String urlReportDeviceInfo = "http://buzapp-services.aloeio.com/dashboard/bus/device/post";
     private static final String CODEPAGE = "UTF-8";
     private static final Integer TIMEOUT = 6500;
     private static final int TWO_MINUTES = 1000 * 60 * 2;
@@ -71,6 +76,8 @@ public class BackgroundService
     private static WifiManager wManager;
     private static AccountManager manager;
     private static Context context;
+    private String regId = "";
+    private GoogleCloudMessaging gcmObj;
 
     Intent intent;
     static final int READ_BLOCK_SIZE = 100;
@@ -83,6 +90,12 @@ public class BackgroundService
         intent = new Intent(BROADCAST_ACTION);
         route = getDataFromFile("buzappRoute.txt");
         myId = getDataFromFile("buzappId.txt");
+
+        //must be after background instaciated
+        if(isGooglePlayAvailable())
+            registerInBackground();
+        else
+            Toast.makeText(context,"Google play services não disponível",Toast.LENGTH_LONG);
 
         context = this;
         manager = AccountManager.get(this);
@@ -349,7 +362,6 @@ public class BackgroundService
 
     public static JSONObject getDeviceInfo()
     {
-
         JSONObject jsonObject = new JSONObject();
         String uuid = tManager.getDeviceId();
         String serial = tManager.getDeviceId();
@@ -365,7 +377,7 @@ public class BackgroundService
 
 
         try {
-            jsonObject = new DeviceInfo(uuid, serial, macAddress, simSerialNumber, simNumber, email,registrationId).toJSON();
+            jsonObject = new DeviceInfo(uuid, serial, macAddress, simSerialNumber, simNumber, email,registrationId,myId).toJSON();
             Log.d("JSON: ",jsonObject.toString());
         }
         catch (Exception e)
@@ -396,6 +408,7 @@ public class BackgroundService
             //display file saved message
             Toast.makeText(context, "File updated successfully!",
                     Toast.LENGTH_SHORT).show();
+            getDeviceInfo();
 
         } catch (Exception e) {}
     }
@@ -438,6 +451,68 @@ public class BackgroundService
             Log.d("Background Device Info", "sendToServer " + e);
         }
 
+    }
+
+
+    // AsyncTask to register Device in GCM Server
+    private void registerInBackground() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String msg = "";
+                try {
+                    if (gcmObj == null) {
+                        gcmObj = GoogleCloudMessaging
+                                .getInstance(context);
+                    }
+                    regId = gcmObj
+                            .register(GCMConstants.GOOGLE_PROJ_ID);
+                    msg = "Registration ID :" + regId;
+
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
+                }
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                if (!TextUtils.isEmpty(regId)) {
+                    // Store RegId created by GCM Server in SharedPref
+                    storeRegIdinSharedPref(context, regId);
+                    Log.d("Registered", " with GCM Server successfully." + msg);
+                    Toast.makeText(context,"Registered with GCM Server successfully." + msg,Toast.LENGTH_SHORT);
+                } else {
+                    Log.d("Reg ID Creation Failed.","Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg);
+                    Toast.makeText(context,"Reg ID Creation Failed. Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg, Toast.LENGTH_LONG);
+                }
+            }
+        }.execute(null, null, null);
+    }
+
+    // Store  RegId and UUID entered by User in SharedPref
+    private void storeRegIdinSharedPref(Context context, String regId) {
+        SharedPreferences prefs = getSharedPreferences("userDetails",
+                Context.MODE_PRIVATE);
+        TelephonyManager tManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        String uuid = tManager.getDeviceId();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(GCMConstants.REG_ID, regId);
+        editor.putString(GCMConstants.UUID, uuid);
+        editor.putString(GCMConstants.EMAIL, "email");
+        Toast.makeText(context, "Gravado" + regId + "   " + uuid, Toast.LENGTH_SHORT);
+        Log.d("Registered", "Gravado" + regId + "   " + uuid);
+        editor.commit();
+        //first register on server
+        BackgroundService.getDeviceInfo();
+
+    }
+
+    public boolean isGooglePlayAvailable() {
+        boolean googlePlayStoreInstalled;
+        int val= GooglePlayServicesUtil.isGooglePlayServicesAvailable(BackgroundService.this);
+        googlePlayStoreInstalled = val == ConnectionResult.SUCCESS;
+        return googlePlayStoreInstalled;
     }
 
 }
