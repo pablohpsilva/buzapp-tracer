@@ -15,8 +15,9 @@ public class DeviceInfo {
     private String simNumber = "simNumber";
     private String email="email";
     private String registrationID="";
+    private String licencePlate="";
 
-    public DeviceInfo(String uuid, String serial, String macAddress, String simSerialNumber, String simNumber, String email,String registrationID) {
+    public DeviceInfo(String uuid, String serial, String macAddress, String simSerialNumber, String simNumber, String email,String registrationID,String plate) {
         this.uuid = uuid;
         this.serial = serial;
         this.macAddress = macAddress;
@@ -24,6 +25,7 @@ public class DeviceInfo {
         this.simNumber = simNumber;
         this.email = email;
         this.registrationID=registrationID;
+        this.licencePlate=plate;
     }
 
     public JSONObject toJSON() throws JSONException {
@@ -36,7 +38,16 @@ public class DeviceInfo {
         json.accumulate("simNumber",this.getSimNumber());
         json.accumulate("email",this.getEmail());
         json.accumulate("registrationId",this.getRegistrationID());
+        json.accumulate("licencePlate",this.getLicencePlate());
         return json;
+    }
+
+    public String getLicencePlate() {
+        return licencePlate;
+    }
+
+    public void setLicencePlate(String licencePlate) {
+        this.licencePlate = licencePlate;
     }
 
     public String getRegistrationID() {
