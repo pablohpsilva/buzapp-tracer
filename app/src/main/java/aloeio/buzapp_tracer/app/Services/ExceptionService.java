@@ -11,9 +11,7 @@ import org.json.JSONException;
 public class ExceptionService {
 
     public final static ExceptionService instance = new ExceptionService();
-
     private ExceptionService(){}
-
     public static ExceptionService getInstance(){
         return instance;
     }
@@ -26,6 +24,7 @@ public class ExceptionService {
     }
 
     private void processException(Class mclass, Exception exception, String tag){
+
         try {
             sendErrorReport(mclass, exception);
         } catch(Exception e){

@@ -8,7 +8,9 @@ import org.json.JSONObject;
 /**
  * Created by pablohenrique on 3/10/15.
  */
-public class ReportSystem implements IBackendJSON {
+public class ReportSystem
+        implements IBackendJSON {
+
     private String OS = "Android";
     private String VERSION;
     private String SMARTPHONE_MODEL;
@@ -16,6 +18,7 @@ public class ReportSystem implements IBackendJSON {
     private String SMARTPHONE_PRODUCT;
     private String SMARTPHONE_BRAND;
     public ReportSystem(){
+
         VERSION = Build.VERSION.RELEASE;
         SMARTPHONE_MANUFACTURER = Build.MANUFACTURER;
         SMARTPHONE_MODEL = Build.MODEL;
@@ -24,6 +27,7 @@ public class ReportSystem implements IBackendJSON {
     }
 
     public JSONObject toJSON() throws JSONException {
+
         JSONObject json = new JSONObject();
         json.accumulate("operational_system", OS);
         json.accumulate("version", VERSION);
@@ -31,6 +35,7 @@ public class ReportSystem implements IBackendJSON {
         json.accumulate("manufacturer", SMARTPHONE_MANUFACTURER);
         json.accumulate("product",SMARTPHONE_PRODUCT);
         json.accumulate("brand",SMARTPHONE_BRAND);
+
         return json;
     }
 }

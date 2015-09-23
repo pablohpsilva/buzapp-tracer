@@ -14,6 +14,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
  * Created by pablohenrique on 2/6/15.
  */
 public class MyLocationService {
+
     private MapView map = null;
     private MyLocationNewOverlay myLocationOverlay = null;
     private IMyLocationProvider myLocationProvider;
@@ -25,6 +26,7 @@ public class MyLocationService {
     }
 
     public MyLocationService(final MapFragment fragment, IMyLocationProvider mMyLocationProvider){
+
         this.fragment = fragment;
         this.myLocationProvider = mMyLocationProvider;
         map = (MapView) fragment.getActivity().findViewById(R.id.home_mapview);
@@ -41,10 +43,11 @@ public class MyLocationService {
     }
 
     public void centerMyLocation(){
-        if(myLocationOverlay.getMyLocation() != null)
+        if(myLocationOverlay.getMyLocation() != null) {
             map.getController().animateTo(myLocationOverlay.getMyLocation());
-        else if(!isSearching)
+        } else if(!isSearching) {
             enableUserLocation();
+        }
     }
 
     public GeoPoint getLastKnownLocation(){
@@ -52,6 +55,7 @@ public class MyLocationService {
     }
 
     public void followUser(){
+
         myLocationOverlay.enableFollowLocation();
         map.postInvalidate();
     }
@@ -61,10 +65,12 @@ public class MyLocationService {
     }
 
     private void enableUserLocation(){
-        if(myLocationProvider == null)
+
+        if(myLocationProvider == null) {
             myLocationOverlay = new MyLocationNewOverlay(fragment.getActivity(), map);
-        else
+        } else {
             myLocationOverlay = new MyLocationNewOverlay(fragment.getActivity(), new MyLocationProvider(this.fragment, BusInfo.getInstance().getRoute()), map);
+        }
         map.getOverlays().add(myLocationOverlay);
         myLocationOverlay.enableMyLocation();
         isSearching = true;
@@ -74,6 +80,7 @@ public class MyLocationService {
                 if (getMyLocationOverlay() == null) {
                     isSearching = false;
                     myLocationOverlay = new MyLocationNewOverlay(fragment.getActivity(), map);
+
                     return;
                 }
 

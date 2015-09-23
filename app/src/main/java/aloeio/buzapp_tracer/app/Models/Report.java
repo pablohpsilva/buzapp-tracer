@@ -7,7 +7,8 @@ import org.json.JSONObject;
 /**
  * Created by pablohenrique on 3/5/15.
  */
-public class Report implements IBackendJSON {
+public class Report
+        implements IBackendJSON {
 
     private ReportSystem smartphoneData = new ReportSystem();
     private ReportException exception = null;
@@ -21,10 +22,12 @@ public class Report implements IBackendJSON {
     }
 
     @Override
-    public JSONObject toJSON() throws JSONException{
+    public JSONObject toJSON() throws JSONException {
+
         JSONObject json = new JSONObject();
         json.accumulate("smartphone_data", this.smartphoneData.toJSON());
         json.accumulate("exception", this.exception.toJSON());
+
         return json;
     }
 }

@@ -21,39 +21,31 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
  * Created by pablohenrique on 4/16/15.
  */
 public class MapManagerService {
+
     private final MapFragment fragment;
-    private MyMarker busMarker, busStopMarker, stepMarker;
     private MyLocationProvider buzappMyLocationProvider;
     private MapView mapView;
     private MyLocationService myLocationService;
-
     final private int CAMERA_ZOOM = 16;
-//    final private int CAMERA_ZOOM = 15;
-    final private String MAPQUEST_API_KEY = "Fmjtd%7Cluu82quznu%2C2w%3Do5-94tgg4";
-
 
     public MapManagerService(final MapFragment fragment){
+
         this.fragment = fragment;
         this.mapView = (MapView) fragment.getActivity().findViewById(R.id.home_mapview);
         this.setOSMDefaults();
     }
 
-    public MyLocationNewOverlay getUserLocationOverlay(){
-        return this.myLocationService.getMyLocationOverlay();
-    }
+    public void drawUserLocation() {
 
-    public void drawUserLocation(){
-        if(buzappMyLocationProvider == null)
+        if(buzappMyLocationProvider == null) {
             buzappMyLocationProvider = new MyLocationProvider(fragment, BusInfo.getInstance().getRoute());
-
-        if(this.myLocationService == null)
-            this.myLocationService = new MyLocationService(fragment,buzappMyLocationProvider);
-        else
+        }
+        if(this.myLocationService == null) {
+            this.myLocationService = new MyLocationService(fragment, buzappMyLocationProvider);
+        } else {
             this.myLocationService.centerMyLocation();
-
+        }
         BackgroundService.setLocationProvider(buzappMyLocationProvider);
-
-
         this.myLocationService.followUser();
     }
 
@@ -61,7 +53,8 @@ public class MapManagerService {
         setOSMDefaults(new GeoPoint(-18.9106433, -48.3239163));
     }
 
-    private void setOSMDefaults(GeoPoint startingPoint){
+    private void setOSMDefaults(GeoPoint startingPoint) {
+
         mapView.setBuiltInZoomControls(false);
         mapView.setKeepScreenOn(true);
         mapView.setSaveEnabled(true);
@@ -76,7 +69,6 @@ public class MapManagerService {
 
         mapView.getController().setZoom(CAMERA_ZOOM);
         setOSMCenter(startingPoint);
-
         mapView.postInvalidate();
     }
 
@@ -84,36 +76,4 @@ public class MapManagerService {
         mapView.getController().setCenter(startingPoint);
     }
 
-    /**
-     * Private methods that handles Buzapp objects
-     */
-
-
-    private void createStopsMarker(){
-        if(this.busStopMarker == null)
-            createStopMarker();
-    }
-
-    private void createBusMarker(){
-        busMarker = new MyMarker(this.mapView);
-        createMarkersDefault(busMarker, fragment.getResources().getDrawable(R.mipmap.ic_bus));
-        System.gc();
-    }
-
-    private void createStopMarker(){
-        busStopMarker = new MyMarker(this.mapView);
-        createMarkersDefault(busStopMarker, fragment.getResources().getDrawable(R.mipmap.ic_stop_sign));
-        System.gc();
-    }
-
-    private void createStepMarker(){
-        stepMarker = new MyMarker(this.mapView);
-        createMarkersDefault(stepMarker, fragment.getResources().getDrawable(R.mipmap.ic_step));
-        System.gc();
-    }
-
-    private void createMarkersDefault(MyMarker marker, Drawable icon){
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        marker.setIcon(icon);
-    }
 }

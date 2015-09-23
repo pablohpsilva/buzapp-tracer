@@ -24,7 +24,8 @@ import org.osmdroid.views.MapView;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment{
+public class MapFragment
+        extends Fragment {
 
     public MapManagerService mapManagerService;
     private Utils utils;
@@ -69,8 +70,8 @@ public class MapFragment extends Fragment{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
@@ -78,11 +79,11 @@ public class MapFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         rootView = inflater.inflate(R.layout.fragment_map, container, false);
         setMainActivityDefaults();
+
         return rootView;
     }
 
@@ -95,23 +96,25 @@ public class MapFragment extends Fragment{
 
     @Override
     public void onAttach(Activity activity) {
+
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
     @Override
     public void onDetach() {
+
         super.onDetach();
         mListener = null;
     }
 
     @Override
     public void onStart(){
+
         super.onStart();
         if(this.mapView == null) {
             this.mapView = (MapView) MapFragment.this.getActivity().findViewById(R.id.home_mapview);
@@ -134,11 +137,10 @@ public class MapFragment extends Fragment{
     }
 
     private void setMainActivityDefaults() {
-        loadingLinearLayout = (LinearLayout) rootView.findViewById(R.id.loading_template);
 
+        loadingLinearLayout = (LinearLayout) rootView.findViewById(R.id.loading_template);
         loadingTextView = (TextView) rootView.findViewById(R.id.loading_text);
         loadingTextView.setText(R.string.home_txt_loading);
-
         this.setDefaultClickListener();
     }
 
@@ -146,6 +148,7 @@ public class MapFragment extends Fragment{
     }
 
     private void toggleLoadingScreen(boolean toggle){
+
         loadingLinearLayout.setVisibility((toggle) ? View.VISIBLE : View.INVISIBLE);
         Log.d("LOADING: ", "DONE");
     }

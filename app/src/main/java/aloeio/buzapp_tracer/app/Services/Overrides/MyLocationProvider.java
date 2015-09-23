@@ -20,7 +20,8 @@ import java.util.TimerTask;
 /**
  * Created by pablohenrique on 4/22/15.
  */
-public class MyLocationProvider implements IMyLocationProvider, LocationListener {
+public class MyLocationProvider
+        implements IMyLocationProvider, LocationListener {
 
     private final LocationManager mLocationManager;
     private final NetworkLocationIgnorer mIgnorer = new NetworkLocationIgnorer();
@@ -48,7 +49,8 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
     private int pathStepCounter = 0;
     private String lastInstruction = "";
 
-    public MyLocationProvider(Fragment activity, String route){
+    public MyLocationProvider(Fragment activity, String route) {
+
         this.activity = activity;
         mLocationManager = (LocationManager) this.activity.getActivity().getSystemService(Context.LOCATION_SERVICE);
         Log.i(this.getClass().getName(), "criada");
@@ -58,25 +60,29 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
 
     @Override
     public boolean startLocationProvider(IMyLocationConsumer iMyLocationConsumer) {
+
         boolean result = false;
         mMyLocationConsumer = iMyLocationConsumer;
 
-        for(final String provider : mLocationManager.getProviders(true))
-            if(LocationManager.GPS_PROVIDER.equals(provider) || LocationManager.NETWORK_PROVIDER.equals(provider)){
+        for(final String provider : mLocationManager.getProviders(true)) {
+            if (LocationManager.GPS_PROVIDER.equals(provider) || LocationManager.NETWORK_PROVIDER.equals(provider)) {
                 result = true;
                 float mLocationUpdateMinDistance = 0.0f;
                 long mLocationUpdateMinTime = 0;
                 mLocationManager.requestLocationUpdates(provider, mLocationUpdateMinTime, mLocationUpdateMinDistance, this);
             }
-
+        }
         Log.i(this.getClass().getName(), "started");
 
         return result;
     }
 
     public boolean startLocationProvider(){
-        if(this.mMyLocationConsumer != null)
+
+        if(this.mMyLocationConsumer != null) {
             return this.startLocationProvider(this.mMyLocationConsumer);
+        }
+
         return false;
     }
 
@@ -93,17 +99,16 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
 
     @Override
     public void onLocationChanged(final Location location) {
-        if(mIgnorer.shouldIgnore(location.getProvider(), System.currentTimeMillis()))
+
+        if(mIgnorer.shouldIgnore(location.getProvider(), System.currentTimeMillis())) {
             return;
-
+        }
         tempLocation = location;
-
         decideContinuity();
-
         mLocation = location;
-
-        if(mMyLocationConsumer != null)
+        if(mMyLocationConsumer != null) {
             mMyLocationConsumer.onLocationChanged(mLocation, this);
+        }
     }
 
     @Override
@@ -122,20 +127,28 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
     }
 
     public boolean verifyDifferentPosition(Location location){
-        if(mLocation != null && location != null)
+
+        if(mLocation != null && location != null) {
             return (this.mLocation.getLatitude() != location.getLatitude() && this.mLocation.getLongitude() != location.getLongitude());
+        }
+
         return false;
     }
 
     public boolean verifyDifferentPosition(Location location1, Location location2){
-        if(location1 != null && location2 != null)
+
+        if(location1 != null && location2 != null) {
             return (location1.getLatitude() != location2.getLatitude() && location1.getLongitude() != location2.getLongitude());
+        }
+
         return false;
     }
 
     public void stopBusTracking(){
-        if(senderTimer != null)
+
+        if(senderTimer != null) {
             senderTimer.cancel();
+        }
         senderTimer = null;
     }
 
@@ -149,14 +162,14 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
         Este metodo decide se o Timer continua ligado ou nao.
         Se ha mais de 10 minutos = 600000 milisegundos
      */
-    public void decideContinuity(){
+    public void decideContinuity() {
+
         if(verifyDifferentPosition(oldMLocation, tempLocation)){
             startBusTracking();
             iddleApp = 0;
         } else {
             iddleApp += 2000;
         }
-
         if(iddleApp > 600000){
             stopBusTracking();
         }

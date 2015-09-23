@@ -13,7 +13,9 @@ import android.widget.TextView;
 /**
  * Created by pablohenrique on 3/15/15.
  */
-public class MyDialog implements Cloneable{
+public class MyDialog
+        implements Cloneable {
+
     private Dialog dialog = null;
     private TextView txt_title = null;
     private TextView txt_message = null;
