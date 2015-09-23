@@ -126,7 +126,7 @@ public class MyLocationProvider
 
     }
 
-    public boolean verifyDifferentPosition(Location location){
+    public boolean verifyDifferentPosition(Location location) {
 
         if(mLocation != null && location != null) {
             return (this.mLocation.getLatitude() != location.getLatitude() && this.mLocation.getLongitude() != location.getLongitude());
@@ -135,7 +135,7 @@ public class MyLocationProvider
         return false;
     }
 
-    public boolean verifyDifferentPosition(Location location1, Location location2){
+    public boolean verifyDifferentPosition(Location location1, Location location2) {
 
         if(location1 != null && location2 != null) {
             return (location1.getLatitude() != location2.getLatitude() && location1.getLongitude() != location2.getLongitude());
