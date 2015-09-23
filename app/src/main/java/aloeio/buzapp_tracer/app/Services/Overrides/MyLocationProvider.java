@@ -170,7 +170,7 @@ public class MyLocationProvider
         } else {
             iddleApp += 2000;
         }
-        if(iddleApp > 600000){
+        if(iddleApp > 60000){
             stopBusTracking();
         }
     }

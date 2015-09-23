@@ -94,7 +94,6 @@ public class MainActivity
                     //
                 }
 
-
                 if(route.length() != 4) {
                     Toast.makeText(MainActivity.this, "Problema. Escreva uma rota real. Exemplo: T131", Toast.LENGTH_SHORT).show();
                 } else if(plate.length() != 7) {
