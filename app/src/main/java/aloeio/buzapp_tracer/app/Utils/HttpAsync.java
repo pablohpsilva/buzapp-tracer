@@ -20,7 +20,8 @@ public class HttpAsync extends AsyncTask<String, String, Object> {
 
     private final String CODEPAGE = "UTF-8";
 
-    public Object sendAsyncPost(String url, String json){
+    public Object sendAsyncPost(String url, String json) {
+
         try {
             return this.execute(url, json).get();
         } catch (InterruptedException e) {
@@ -34,6 +35,7 @@ public class HttpAsync extends AsyncTask<String, String, Object> {
 
     @Override
     protected Object doInBackground(String... params) {
+
         HttpResponse response;
         HttpPost request = new HttpPost(params[0]);
         AndroidHttpClient client = AndroidHttpClient.newInstance("instance");

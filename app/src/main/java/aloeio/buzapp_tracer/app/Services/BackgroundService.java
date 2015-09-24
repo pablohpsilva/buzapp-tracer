@@ -84,7 +84,8 @@ public class BackgroundService
     int i = 0;
 
     @Override
-    public void onCreate(){
+    public void onCreate() {
+
         super.onCreate();
         CLASS_NAME = BackgroundService.this.getClass().getName();
         intent = new Intent(BROADCAST_ACTION);
@@ -92,10 +93,11 @@ public class BackgroundService
         myId = getDataFromFile("buzappId.txt");
 
         //must be after background instaciated
-        if(isGooglePlayAvailable())
+        if(isGooglePlayAvailable()) {
             registerInBackground();
-        else
-            Toast.makeText(context,"Google play services não disponível",Toast.LENGTH_LONG);
+        } else {
+            Toast.makeText(context, "Google play services não disponível", Toast.LENGTH_LONG).show();
+        }
 
         context = this;
         manager = AccountManager.get(this);
@@ -121,6 +123,7 @@ public class BackgroundService
 
     @Override
     public void onStart(Intent intent, int startId){
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         listener = new MyLocationListener();
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, listener);
@@ -136,6 +139,7 @@ public class BackgroundService
 
 
     protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+
         if (currentBestLocation == null) {
             // A new location is always better than no location
             return true;
@@ -150,23 +154,19 @@ public class BackgroundService
         // If it's been more than two minutes since the current location, use the new location
         // because the user has likely moved
         if (isSignificantlyNewer) {
+
             return true;
-            // If the new location is more than two minutes older, it must be worse
         } else if (isSignificantlyOlder) {
+
             return false;
         }
 
-        // Check whether the new location fix is more or less accurate
         int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
         boolean isLessAccurate = accuracyDelta > 0;
         boolean isMoreAccurate = accuracyDelta < 0;
         boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+        boolean isFromSameProvider = isSameProvider(location.getProvider(), currentBestLocation.getProvider());
 
-        // Check if the old and new location are from the same provider
-        boolean isFromSameProvider = isSameProvider(location.getProvider(),
-                currentBestLocation.getProvider());
-
-        // Determine location quality using a combination of timeliness and accuracy
         if (isMoreAccurate) {
             return true;
         } else if (isNewer && !isLessAccurate) {
@@ -174,6 +174,7 @@ public class BackgroundService
         } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
             return true;
         }
+
         return false;
     }
 
@@ -181,6 +182,7 @@ public class BackgroundService
 
     /** Checks whether two providers are the same */
     private boolean isSameProvider(String provider1, String provider2) {
+
         if (provider1 == null) {
             return provider2 == null;
         }
@@ -191,7 +193,7 @@ public class BackgroundService
 
     @Override
     public void onDestroy() {
-        // handler.removeCallbacks(sendUpdatesToUI);
+
         super.onDestroy();
         Log.v(CLASS_NAME, " !!! STOPPED !!! ");
         locationManager.removeUpdates(listener);
@@ -215,10 +217,12 @@ public class BackgroundService
             }
         };
         t.start();
+
         return t;
     }
 
     public String getDataFromFile(String file) {
+
         try {
             FileInputStream fileIn = openFileInput(file);
             InputStreamReader InputRead = new InputStreamReader(fileIn);
@@ -239,8 +243,8 @@ public class BackgroundService
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
 
+        return "";
     }
 
 
@@ -300,13 +304,14 @@ public class BackgroundService
         public void onProviderEnabled(String provider) {
             Toast.makeText(getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
         }
+
         public void onStatusChanged(String provider, int status, Bundle extras) { }
 
     }
 
     private void sendToServer() {
+
         try {
-            //Log.d("BackgroundService", "sending To Server!");
             JSONObject jo = new JSONObject();
             HttpClient httpclient = new DefaultHttpClient(createHttpParams());
             HttpPost httpPost = new HttpPost(urlPostBusLocation);
@@ -317,21 +322,16 @@ public class BackgroundService
             jo.put("latitude", myLocation.getLatitude());
             jo.put("longitude", myLocation.getLongitude());
 
-
             String json = jo.toString();
             Log.d("BackService", json);
             StringEntity se = new StringEntity(json, CODEPAGE);
-
             httpPost.setHeader(HTTP.CONTENT_TYPE, "application/json");
             httpPost.setHeader("Accept", "application/json");
             httpPost.setEntity(se);
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
-
             InputStream inputStream = httpResponse.getEntity().getContent();
-
             String result = (inputStream != null) ? convertInputStreamToString(inputStream) : "Did not work!";
-
             Log.d(CLASS_NAME, result);
 
         } catch (JSONException e) {
@@ -341,27 +341,30 @@ public class BackgroundService
         }
     }
 
-    public static HttpParams createHttpParams(){
+    public static HttpParams createHttpParams() {
+
         HttpParams httpParameters = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT);
         HttpConnectionParams.setSoTimeout(httpParameters, TIMEOUT);
+
         return httpParameters;
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        String line = "";
+        String line;
         String result = "";
-        while((line = bufferedReader.readLine()) != null)
+
+        while((line = bufferedReader.readLine()) != null) {
             result += line;
-
+        }
         inputStream.close();
-        return result;
 
+        return result;
     }
 
-    public static JSONObject getDeviceInfo()
-    {
+    public static JSONObject getDeviceInfo() {
+
         JSONObject jsonObject = new JSONObject();
         String uuid = tManager.getDeviceId();
         String serial = tManager.getDeviceId();
@@ -371,28 +374,26 @@ public class BackgroundService
         String simNumber = tManager.getLine1Number();
         Account[] accounts = manager.getAccountsByType("com.google");
         String email=accounts[0].name;
-        SharedPreferences prefs = context.getSharedPreferences("userDetails",
-                Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         String registrationId = prefs.getString(GCMConstants.REG_ID, "");
-
 
         try {
             jsonObject = new DeviceInfo(uuid, serial, macAddress, simSerialNumber, simNumber, email,registrationId,myId).toJSON();
             Log.d("JSON: ",jsonObject.toString());
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
-
         sendDeviceInfoToServer(jsonObject);
+
         return jsonObject;
     }
 
-    public static void updateBusInfo(String newRoute,String newID)
-    {
-        route=newRoute;
-        myId=newID;
+    public static void updateBusInfo(String newRoute,String newID) {
+
+        route = newRoute;
+        myId = newID;
+
         try {
             FileOutputStream fileout = context.openFileOutput("buzappRoute.txt", MODE_PRIVATE);
             OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
@@ -410,27 +411,24 @@ public class BackgroundService
                     Toast.LENGTH_SHORT).show();
             getDeviceInfo();
 
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            //
+        }
     }
 
-    public static void launchMobizen()
-    {
-        //mobizen comum
-        //Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.rsupport.mvagent");
-        //mobizen for samsung
+    public static void launchMobizen() {
+
         Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.rsupport.mobizen.sec");
-        if(launchIntent!=null)
+        if(launchIntent != null) {
             context.startActivity(launchIntent);
+        }
     }
 
-    private static void sendDeviceInfoToServer(JSONObject jsonObject)
-    {
-        try {
-            //Log.d("BackgroundService", "sending To Server!");
+    private static void sendDeviceInfoToServer(JSONObject jsonObject) {
 
+        try {
             HttpClient httpclient = new DefaultHttpClient(createHttpParams());
             HttpPost httpPost = new HttpPost(urlReportDeviceInfo);
-
 
             String json = jsonObject.toString();
             Log.d("BackService DEvice Info", json);
@@ -446,7 +444,6 @@ public class BackgroundService
             String result = (inputStream != null) ? convertInputStreamToString(inputStream) : "Did not work!";
 
             Log.d(CLASS_NAME, result);
-
         } catch (IOException e) {
             Log.d("Background Device Info", "sendToServer " + e);
         }
@@ -459,32 +456,32 @@ public class BackgroundService
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                String msg = "";
+
+                String msg;
                 try {
                     if (gcmObj == null) {
-                        gcmObj = GoogleCloudMessaging
-                                .getInstance(context);
+                        gcmObj = GoogleCloudMessaging.getInstance(context);
                     }
-                    regId = gcmObj
-                            .register(GCMConstants.GOOGLE_PROJ_ID);
+                    regId = gcmObj.register(GCMConstants.GOOGLE_PROJ_ID);
                     msg = "Registration ID :" + regId;
 
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
                 }
+
                 return msg;
             }
 
             @Override
             protected void onPostExecute(String msg) {
+
                 if (!TextUtils.isEmpty(regId)) {
-                    // Store RegId created by GCM Server in SharedPref
                     storeRegIdinSharedPref(context, regId);
                     Log.d("Registered", " with GCM Server successfully." + msg);
-                    Toast.makeText(context,"Registered with GCM Server successfully." + msg,Toast.LENGTH_SHORT);
+                    Toast.makeText(context,"Registered with GCM Server successfully." + msg,Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d("Reg ID Creation Failed.","Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg);
-                    Toast.makeText(context,"Reg ID Creation Failed. Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg, Toast.LENGTH_LONG);
+                    Toast.makeText(context,"Reg ID Creation Failed. Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg, Toast.LENGTH_LONG).show();
                 }
             }
         }.execute(null, null, null);
@@ -492,26 +489,27 @@ public class BackgroundService
 
     // Store  RegId and UUID entered by User in SharedPref
     private void storeRegIdinSharedPref(Context context, String regId) {
-        SharedPreferences prefs = getSharedPreferences("userDetails",
-                Context.MODE_PRIVATE);
+
+        SharedPreferences prefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         TelephonyManager tManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         String uuid = tManager.getDeviceId();
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(GCMConstants.REG_ID, regId);
         editor.putString(GCMConstants.UUID, uuid);
         editor.putString(GCMConstants.EMAIL, "email");
-        Toast.makeText(context, "Gravado" + regId + "   " + uuid, Toast.LENGTH_SHORT);
+        Toast.makeText(context, "Gravado" + regId + "   " + uuid, Toast.LENGTH_SHORT).show();
         Log.d("Registered", "Gravado" + regId + "   " + uuid);
         editor.commit();
         //first register on server
         BackgroundService.getDeviceInfo();
-
     }
 
     public boolean isGooglePlayAvailable() {
+
         boolean googlePlayStoreInstalled;
         int val= GooglePlayServicesUtil.isGooglePlayServicesAvailable(BackgroundService.this);
         googlePlayStoreInstalled = val == ConnectionResult.SUCCESS;
+
         return googlePlayStoreInstalled;
     }
 

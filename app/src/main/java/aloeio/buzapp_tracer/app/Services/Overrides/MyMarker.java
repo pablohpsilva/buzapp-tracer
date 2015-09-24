@@ -8,7 +8,10 @@ import java.io.Serializable;
 /**
  * Created by pablohenrique on 2/21/15.
  */
-public class MyMarker extends Marker implements Cloneable, Serializable {
+public class MyMarker
+        extends Marker
+        implements Cloneable, Serializable {
+
     public MyMarker(MapView mapView) {
         super(mapView);
     }

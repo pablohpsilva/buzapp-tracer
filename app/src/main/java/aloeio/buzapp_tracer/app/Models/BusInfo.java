@@ -1,6 +1,5 @@
 package aloeio.buzapp_tracer.app.Models;
 
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -9,6 +8,7 @@ import android.widget.Switch;
  * Created by pablohenrique on 7/27/15.
  */
 public class BusInfo {
+
     private static BusInfo instance = new BusInfo();
     private String route;
     private String plate;
@@ -26,7 +26,8 @@ public class BusInfo {
         this.setAll(route.getText().toString(), plate.getText().toString(), busNumber.getText().toString(), type.getSelectedItem().toString(), accessibility.isChecked());
     }
 
-    public void setAll(String route, String plate, String busNumber, String type, boolean accessibility){
+    public void setAll(String route, String plate, String busNumber, String type, boolean accessibility) {
+
         setRoute(route);
         setPlate(plate);
         setBusNumber(busNumber);

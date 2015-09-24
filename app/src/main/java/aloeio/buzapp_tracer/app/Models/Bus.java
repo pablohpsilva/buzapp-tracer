@@ -1,34 +1,24 @@
 package aloeio.buzapp_tracer.app.Models;
 
 import aloeio.buzapp_tracer.app.Interfaces.IBackendJSON;
-import aloeio.buzapp_tracer.app.MainActivity;
-import aloeio.buzapp_tracer.app.Services.BackgroundService;
 import aloeio.buzapp_tracer.app.Utils.HttpUtils;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Location;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.HttpException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.URISyntaxException;
 
 /**
  * Created by pablohenrique on 5/26/15.
  */
-public class Bus implements IBackendJSON {
+public class Bus
+        implements IBackendJSON {
+
     private String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/receivebus";
     private String urlGetServiceID = "http://buzapp-services.aloeio.com/busweb/tracer/generatedid/";
     private String route;
@@ -42,14 +32,7 @@ public class Bus implements IBackendJSON {
         return location;
     }
     public Bus(String route){
-//        if(route != null) {
-//            this.route = route + "";
-//            this.id = id + 0;
-//        }
-//        else {
-//            this.route = route + "T131";
-//            this.id = 25;
-//        }
+
         if(route.equals("")) {
             throw new NullPointerException();
         } else {
@@ -62,12 +45,12 @@ public class Bus implements IBackendJSON {
     }
 
     public void sendJSON(Location location) throws JSONException, IOException, NullPointerException {
+
         JSONObject json = this.prepareJSON(location);
         String str = "0";
         if(json != null && !this.id.equals("-1")) {
             httpUtils.postRequest(urlPostBusLocation, json);
             System.out.println(json.toString());
-//            httpUtils.postGZippedRequest(urlPostBusLocation, json);
             Log.d("Bus",json.toString());
         }
     }
@@ -79,11 +62,13 @@ public class Bus implements IBackendJSON {
 
     @Override
     public JSONObject toJSON() throws JSONException {
+
         this.jsonObject.put("linha", this.route);
         this.jsonObject.put("id", this.id);
         this.jsonObject.put("velocity", this.location.getSpeed());
         this.jsonObject.put("latitude", this.location.getLatitude());
         this.jsonObject.put("longitude", this.location.getLongitude());
+
         return this.jsonObject;
     }
 
@@ -91,7 +76,8 @@ public class Bus implements IBackendJSON {
         return this.toJSON().toString();
     }
 
-    private JSONObject prepareJSON(Location location) throws JSONException{
+    private JSONObject prepareJSON(Location location) throws JSONException {
+
         if(verifySameGeoPositions(location)) {
             if(!verifyNullSpeed(location)) {
                 if(this.speedNotNull){
@@ -111,6 +97,7 @@ public class Bus implements IBackendJSON {
                 return this.toJSON();
             }
         }
+
         return null;
     }
 
@@ -125,21 +112,12 @@ public class Bus implements IBackendJSON {
 
 
     private void setServiceId(){
+
         new Runnable() {
             public void run() {
                 try {
                     String result = httpUtils.getGZippedRequest(urlGetServiceID + route);
                     id = result;
-
-//                    File f1 = new File("id.txt");
-//                    FileWriter fr = new FileWriter(f1);
-//                    BufferedWriter bw = new BufferedWriter(fr);
-//
-//                    bw.write(id);
-//
-//                    bw.close();
-//
-//                    Log.d("Bus","Salvei o ID");
 
                     this.finalize();
                 } catch (HttpException e) {

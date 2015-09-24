@@ -18,14 +18,15 @@ public class DeviceInfo {
     private String licencePlate="";
 
     public DeviceInfo(String uuid, String serial, String macAddress, String simSerialNumber, String simNumber, String email,String registrationID,String plate) {
+
         this.uuid = uuid;
         this.serial = serial;
         this.macAddress = macAddress;
         this.simSerialNumber = simSerialNumber;
         this.simNumber = simNumber;
         this.email = email;
-        this.registrationID=registrationID;
-        this.licencePlate=plate;
+        this.registrationID = registrationID;
+        this.licencePlate = plate;
     }
 
     public JSONObject toJSON() throws JSONException {
@@ -39,6 +40,7 @@ public class DeviceInfo {
         json.accumulate("email",this.getEmail());
         json.accumulate("registrationId",this.getRegistrationID());
         json.accumulate("licencePlate",this.getLicencePlate());
+
         return json;
     }
 
