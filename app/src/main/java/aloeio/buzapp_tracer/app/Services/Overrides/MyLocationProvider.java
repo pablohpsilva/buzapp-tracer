@@ -168,9 +168,9 @@ public class MyLocationProvider
             startBusTracking();
             iddleApp = 0;
         } else {
-            iddleApp += 2000;
+            iddleApp += 1;
         }
-        if(iddleApp > 60000){
+        if(iddleApp > 600){
             stopBusTracking();
         }
     }
@@ -194,12 +194,6 @@ public class MyLocationProvider
                     } catch (JSONException e) {
 //                    exceptionControllerSingleton.catchException(NewBusService.class, e, "bad backend");
                         Log.d("MyLocationProviderJ", e.getMessage());
-                    } catch (IOException e) {
-//                    exceptionControllerSingleton.catchException(NewBusService.class, e, "bad backend");
-                        Log.d("MyLocationProviderI", e.getMessage());
-                    } catch (NullPointerException e) {
-//                    exceptionControllerSingleton.catchException(NewBusService.class, e, "bad backend");
-                        Log.d("MyLocationProviderN", e.getMessage());
                     } catch (Exception e) {
 //                    exceptionControllerSingleton.catchException(NewBusService.class, e);
                         Log.d("MyLocationProviderE", e.getMessage());
