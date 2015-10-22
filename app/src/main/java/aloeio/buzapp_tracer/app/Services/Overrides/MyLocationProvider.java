@@ -168,9 +168,9 @@ public class MyLocationProvider
             startBusTracking();
             iddleApp = 0;
         } else {
-            iddleApp += 2000;
+            iddleApp += 1;
         }
-        if(iddleApp > 60000){
+        if(iddleApp > 600){
             stopBusTracking();
         }
     }
