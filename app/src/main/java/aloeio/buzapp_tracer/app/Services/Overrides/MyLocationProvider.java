@@ -33,7 +33,6 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
     private Bus bus;
     private Timer senderTimer;
     private int TIMER_VAR = 2000;
-    private int iddleApp = 0;
 
 
     /**
@@ -98,7 +97,8 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
 
         tempLocation = location;
 
-        decideContinuity();
+//        decideContinuity();
+        startBusTracking();
 
         mLocation = location;
 
@@ -142,23 +142,6 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
     public void restartBusTracking(){
         if(senderTimer == null){
             startBusTracking();
-        }
-    }
-
-    /*
-        Este metodo decide se o Timer continua ligado ou nao.
-        Se ha mais de 10 minutos = 600000 milisegundos
-     */
-    public void decideContinuity(){
-        if(verifyDifferentPosition(oldMLocation, tempLocation)){
-            startBusTracking();
-            iddleApp = 0;
-        } else {
-            iddleApp += 2000;
-        }
-
-        if(iddleApp > 600000){
-            stopBusTracking();
         }
     }
 
