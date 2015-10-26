@@ -1,28 +1,16 @@
 package aloeio.buzapp_tracer.app.Models;
 
 import aloeio.buzapp_tracer.app.Interfaces.IBackendJSON;
-import aloeio.buzapp_tracer.app.MainActivity;
-import aloeio.buzapp_tracer.app.Services.BackgroundService;
 import aloeio.buzapp_tracer.app.Utils.HttpUtils;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Location;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.HttpException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.URISyntaxException;
 
 /**

@@ -157,10 +157,13 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
                 @Override
                 public void run() {
                     try {
-                        if(verifyDifferentPosition(oldMLocation, tempLocation)) {
-                            bus.sendJSON(tempLocation);
-                        }
-                        oldMLocation = tempLocation;
+//                        if(verifyDifferentPosition(oldMLocation, tempLocation)) {
+//                            bus.sendJSON(tempLocation);
+//                        }
+//                        oldMLocation = tempLocation;
+
+                        bus.sendJSON(tempLocation);
+
                     } catch (JSONException e) {
 //                    exceptionControllerSingleton.catchException(NewBusService.class, e, "bad backend");
                         Log.d("MyLocationProviderJ", e.getMessage());
