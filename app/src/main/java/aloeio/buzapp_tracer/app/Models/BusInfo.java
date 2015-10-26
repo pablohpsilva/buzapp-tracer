@@ -1,6 +1,5 @@
 package aloeio.buzapp_tracer.app.Models;
 
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;

@@ -1,6 +1,5 @@
 package aloeio.buzapp_tracer.app.Services;
 
-import aloeio.buzapp_tracer.app.MainActivity;
 import aloeio.buzapp_tracer.app.Models.BusInfo;
 import aloeio.buzapp_tracer.app.R;
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
