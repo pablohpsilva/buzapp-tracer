@@ -14,14 +14,6 @@ import android.view.ViewGroup;
 import android.widget.*;
 import org.osmdroid.views.MapView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MapFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MapFragment extends Fragment{
 
     public MapManagerService mapManagerService;
@@ -132,8 +124,8 @@ public class MapFragment extends Fragment{
     }
 
     private void setMainActivityDefaults() {
-        loadingLinearLayout = (LinearLayout) rootView.findViewById(R.id.loading_template);
 
+        loadingLinearLayout = (LinearLayout) rootView.findViewById(R.id.loading_template);
         loadingTextView = (TextView) rootView.findViewById(R.id.loading_text);
         loadingTextView.setText(R.string.home_txt_loading);
 

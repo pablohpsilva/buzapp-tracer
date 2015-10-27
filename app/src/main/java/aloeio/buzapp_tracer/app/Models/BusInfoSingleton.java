@@ -7,17 +7,17 @@ import android.widget.Switch;
 /**
  * Created by pablohenrique on 7/27/15.
  */
-public class BusInfo {
-    private static BusInfo instance = new BusInfo();
+public class BusInfoSingleton {
+    private static BusInfoSingleton instance = new BusInfoSingleton();
     private String route;
     private String plate;
     private String busNumber;
     private String type;
     private boolean accessibility;
 
-    private BusInfo(){}
+    private BusInfoSingleton(){}
 
-    public static BusInfo getInstance(){
+    public static BusInfoSingleton getInstance(){
         return instance;
     }
 
