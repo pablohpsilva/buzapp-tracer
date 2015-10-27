@@ -20,8 +20,8 @@ android {
         applicationId "aloeio.buzapp_tracer.app"
         minSdkVersion 9
         targetSdkVersion 21
-        versionCode 6
-        versionName "6.3"
+        versionCode 9
+        versionName "9"
     }
 
     compileOptions {
