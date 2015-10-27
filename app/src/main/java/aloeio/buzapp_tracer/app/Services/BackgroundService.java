@@ -53,7 +53,7 @@ public class BackgroundService
     public static final String BROADCAST_ACTION = "Service Back";
 
     private static String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/receivebus";
-    private static String urlRemoveBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/removebus/{linha}/{id}";
+//    private static String urlRemoveBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/removebus/{linha}/{id}";
     private static final String urlReportDeviceInfo = "http://buzapp-services.aloeio.com/busweb/tracer/getbus";
     private static final String CODEPAGE = "UTF-8";
     private static final Integer TIMEOUT = 6500;
@@ -256,23 +256,24 @@ public class BackgroundService
                         sendToServer();
                         timerCounter = 0;
                         hasStoped = false;
-                    } else { // If the bus has stopped, count its position. Stop service if needed.
-                        timerCounter += TIME_UPDATE;
-                        if(timerCounter >= TIME_UPDATE_LIMIT && !hasStoped) {
-                            try {
-                                hasStoped = true;
-                                HttpUtils httpUtils = new HttpUtils();
-                                String result = httpUtils.getRequest(urlRemoveBusLocation.replace("{linha}", route).replace("{id}", myId));
-                                System.out.println(result);
-                            } catch (HttpException e) {
-                                e.printStackTrace();
-                            } catch (URISyntaxException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
                     }
+//                    else { // If the bus has stopped, count its position. Stop service if needed.
+//                        timerCounter += TIME_UPDATE;
+//                        if(timerCounter >= TIME_UPDATE_LIMIT && !hasStoped) {
+//                            try {
+//                                hasStoped = true;
+//                                HttpUtils httpUtils = new HttpUtils();
+//                                String result = httpUtils.getRequest(urlRemoveBusLocation.replace("{linha}", route).replace("{id}", myId));
+//                                System.out.println(result);
+//                            } catch (HttpException e) {
+//                                e.printStackTrace();
+//                            } catch (URISyntaxException e) {
+//                                e.printStackTrace();
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
                 } else {
                     myLocation = loc;
                 }

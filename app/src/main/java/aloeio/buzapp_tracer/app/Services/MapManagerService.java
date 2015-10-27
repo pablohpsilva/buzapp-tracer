@@ -42,7 +42,7 @@ public class MapManagerService {
 
     public void drawUserLocation(){
         if(buzappMyLocationProvider == null)
-            buzappMyLocationProvider = new MyLocationProvider(fragment, BusInfo.getInstance().getRoute());
+            buzappMyLocationProvider = new MyLocationProvider(fragment, BusInfo.getInstance().getRoute(), BusInfo.getInstance().getPlate());
 
         if(this.myLocationService == null)
             this.myLocationService = new MyLocationService(fragment,buzappMyLocationProvider);

@@ -47,11 +47,11 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
     private int pathStepCounter = 0;
     private String lastInstruction = "";
 
-    public MyLocationProvider(Fragment activity, String route){
+    public MyLocationProvider(Fragment activity, String route, String plate){
         this.activity = activity;
         mLocationManager = (LocationManager) this.activity.getActivity().getSystemService(Context.LOCATION_SERVICE);
         Log.i(this.getClass().getName(), "criada");
-        bus = new Bus(route);
+        bus = new Bus(route, plate);
         startBusTracking();
     }
 
@@ -95,12 +95,12 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
         if(mIgnorer.shouldIgnore(location.getProvider(), System.currentTimeMillis()))
             return;
 
-        tempLocation = location;
+//        tempLocation = location;
+        mLocation = location;
 
 //        decideContinuity();
         startBusTracking();
 
-        mLocation = location;
 
         if(mMyLocationConsumer != null)
             mMyLocationConsumer.onLocationChanged(mLocation, this);
@@ -162,7 +162,9 @@ public class MyLocationProvider implements IMyLocationProvider, LocationListener
 //                        }
 //                        oldMLocation = tempLocation;
 
-                        bus.sendJSON(tempLocation);
+                        if(mLocation != null){
+                            bus.sendJSON(mLocation);
+                        }
 
                     } catch (JSONException e) {
 //                    exceptionControllerSingleton.catchException(NewBusService.class, e, "bad backend");

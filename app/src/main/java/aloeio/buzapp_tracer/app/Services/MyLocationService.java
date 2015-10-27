@@ -63,7 +63,7 @@ public class MyLocationService {
         if(myLocationProvider == null)
             myLocationOverlay = new MyLocationNewOverlay(fragment.getActivity(), map);
         else
-            myLocationOverlay = new MyLocationNewOverlay(fragment.getActivity(), new MyLocationProvider(this.fragment, BusInfo.getInstance().getRoute()), map);
+            myLocationOverlay = new MyLocationNewOverlay(fragment.getActivity(), new MyLocationProvider(this.fragment, BusInfo.getInstance().getRoute(), BusInfo.getInstance().getPlate()), map);
         map.getOverlays().add(myLocationOverlay);
         myLocationOverlay.enableMyLocation();
         isSearching = true;
