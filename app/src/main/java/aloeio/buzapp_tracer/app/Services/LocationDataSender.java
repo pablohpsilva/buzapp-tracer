@@ -1,4 +1,4 @@
-package aloeio.buzapp_tracer.app.Models;
+package aloeio.buzapp_tracer.app.Services;
 
 import aloeio.buzapp_tracer.app.Utils.HttpUtils;
 
@@ -13,16 +13,14 @@ import java.io.IOException;
 /**
  * Created by pablohenrique on 5/26/15.
  */
-public class Bus {
+public class LocationDataSender {
     private String urlPostBusLocation = "http://buzapp-services.aloeio.com/busweb/tracer/receivebus";
-    private String urlGetServiceID = "http://buzapp-services.aloeio.com/busweb/tracer/generatedid/";
     private String route;
     private String plate;
-//    private Location location;
     private JSONObject jsonObject;
     private HttpUtils httpUtils;
 
-    public Bus(String route, String plate){
+    public LocationDataSender(String route, String plate){
         this.route = route;
         this.plate = plate;
         this.jsonObject = new JSONObject();
@@ -33,7 +31,7 @@ public class Bus {
         this.myPrepareJSON(location);
         httpUtils.postRequest(urlPostBusLocation, this.jsonObject);
         System.out.println(this.jsonObject.toString());
-        Log.d("Bus", this.jsonObject.toString());
+        Log.d("LocationDataSender", this.jsonObject.toString());
     }
 
     public void myPrepareJSON(Location location) throws JSONException {
@@ -42,6 +40,5 @@ public class Bus {
         this.jsonObject.put("velocity", location.getSpeed());
         this.jsonObject.put("latitude", location.getLatitude());
         this.jsonObject.put("longitude", location.getLongitude());
-//        return this.jsonObject;
     }
 }

@@ -1,23 +1,17 @@
 package aloeio.buzapp_tracer.app;
 
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
-import aloeio.buzapp_tracer.app.Models.BusInfo;
-import aloeio.buzapp_tracer.app.Models.DeviceInfo;
+import aloeio.buzapp_tracer.app.Models.BusInfoSingleton;
 import aloeio.buzapp_tracer.app.Services.BackgroundService;
 import aloeio.buzapp_tracer.app.Utils.GCMConstants;
 import aloeio.buzapp_tracer.app.Utils.Utils;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
@@ -28,9 +22,7 @@ import android.widget.*;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -86,7 +78,7 @@ public class MainActivity extends FragmentActivity implements
         accessibilitySwitch = (Switch) findViewById(R.id.main_swt_accessibility);
         typeSpinner = (Spinner) findViewById(R.id.main_spn_type);
         startButton = (Button) findViewById(R.id.main_btn_start);
-        BusInfo.getInstance();
+        BusInfoSingleton.getInstance();
 
         routeEditText.setText("T131");
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +116,7 @@ public class MainActivity extends FragmentActivity implements
                     Toast.makeText(MainActivity.this, "Problema. O Numero do onibus deve ser somente numeros.", Toast.LENGTH_SHORT).show();
                 } else {
 //                    mainRoute = route;
-                    BusInfo.getInstance().setAll(routeEditText, plateEditText, numberEditText, typeSpinner, accessibilitySwitch);
+                    BusInfoSingleton.getInstance().setAll(routeEditText, plateEditText, numberEditText, typeSpinner, accessibilitySwitch);
                     findViewById(R.id.main_controls).setVisibility(View.INVISIBLE);
 //                    findViewById(R.id.buzapp_logo).setVisibility(View.GONE);
                     findViewById(R.id.main_loading_spinner).setVisibility(View.VISIBLE);
