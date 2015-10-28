@@ -1,11 +1,9 @@
 package aloeio.buzapp_tracer.app.Services;
 
-import aloeio.buzapp_tracer.app.MainActivity;
-import aloeio.buzapp_tracer.app.Models.BusInfo;
+import aloeio.buzapp_tracer.app.Models.BusInfoSingleton;
 import aloeio.buzapp_tracer.app.R;
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
-import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.mylocation.IMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
@@ -19,10 +17,6 @@ public class MyLocationService {
     private IMyLocationProvider myLocationProvider;
     private final MapFragment fragment;
     private boolean isSearching = false;
-
-    public MyLocationService(final MapFragment fragment){
-        this(fragment, null);
-    }
 
     public MyLocationService(final MapFragment fragment, IMyLocationProvider mMyLocationProvider){
         this.fragment = fragment;
@@ -41,14 +35,11 @@ public class MyLocationService {
     }
 
     public void centerMyLocation(){
-        if(myLocationOverlay.getMyLocation() != null)
+        if(myLocationOverlay.getMyLocation() != null) {
             map.getController().animateTo(myLocationOverlay.getMyLocation());
-        else if(!isSearching)
+        } else if(!isSearching) {
             enableUserLocation();
-    }
-
-    public GeoPoint getLastKnownLocation(){
-        return myLocationOverlay.getMyLocation();
+        }
     }
 
     public void followUser(){
@@ -56,17 +47,15 @@ public class MyLocationService {
         map.postInvalidate();
     }
 
-    public MyLocationProvider getMyLocationProvider(){
-        return (MyLocationProvider) this.myLocationOverlay.getMyLocationProvider();
-    }
-
     private void enableUserLocation(){
-        if(myLocationProvider == null)
-            myLocationOverlay = new MyLocationNewOverlay(fragment.getActivity(), map);
-        else
-            myLocationOverlay = new MyLocationNewOverlay(fragment.getActivity(), new MyLocationProvider(this.fragment, BusInfo.getInstance().getRoute()), map);
+        myLocationOverlay = (myLocationProvider == null) ?
+                new MyLocationNewOverlay(fragment.getActivity(), map) :
+                new MyLocationNewOverlay(fragment.getActivity(), new MyLocationProvider(this.fragment, BusInfoSingleton.getInstance().getRoute(), BusInfoSingleton.getInstance().getPlate()), map);
+
         map.getOverlays().add(myLocationOverlay);
         myLocationOverlay.enableMyLocation();
+        myLocationOverlay.enableFollowLocation();
+
         isSearching = true;
 
         myLocationOverlay.runOnFirstFix(new Runnable() {

@@ -1,23 +1,17 @@
 package aloeio.buzapp_tracer.app;
 
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
-import aloeio.buzapp_tracer.app.Models.BusInfo;
-import aloeio.buzapp_tracer.app.Models.DeviceInfo;
+import aloeio.buzapp_tracer.app.Models.BusInfoSingleton;
 import aloeio.buzapp_tracer.app.Services.BackgroundService;
 import aloeio.buzapp_tracer.app.Utils.GCMConstants;
 import aloeio.buzapp_tracer.app.Utils.Utils;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
@@ -28,9 +22,7 @@ import android.widget.*;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -83,7 +75,7 @@ public class MainActivity extends FragmentActivity implements
         accessibilitySwitch = (Switch) findViewById(R.id.main_swt_accessibility);
         typeSpinner = (Spinner) findViewById(R.id.main_spn_type);
         startButton = (Button) findViewById(R.id.main_btn_start);
-        BusInfo.getInstance();
+        BusInfoSingleton.getInstance();
 
         routeEditText.setText("T131");
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +113,7 @@ public class MainActivity extends FragmentActivity implements
                     Toast.makeText(MainActivity.this, "Problema. O Numero do onibus deve ser somente numeros.", Toast.LENGTH_SHORT).show();
                 } else {
 //                    mainRoute = route;
-                    BusInfo.getInstance().setAll(routeEditText, plateEditText, numberEditText, typeSpinner, accessibilitySwitch);
+                    BusInfoSingleton.getInstance().setAll(routeEditText, plateEditText, numberEditText, typeSpinner, accessibilitySwitch);
                     findViewById(R.id.main_controls).setVisibility(View.INVISIBLE);
 //                    findViewById(R.id.buzapp_logo).setVisibility(View.GONE);
                     findViewById(R.id.main_loading_spinner).setVisibility(View.VISIBLE);
@@ -133,26 +125,6 @@ public class MainActivity extends FragmentActivity implements
 
                     Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
                     startService(intent);
-
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            for(;;) {
-//                                Log.d("Thread", "Trying save id");
-//                                if (setIdOnFile) {
-//                                    saveId();
-//                                    Log.d("Thread", "Saved");
-//                                    return;
-//                                } else {
-//                                    try {
-//                                        Thread.sleep(2000);
-//                                    } catch (InterruptedException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }).start();
 
                 }
             }
@@ -227,10 +199,10 @@ public class MainActivity extends FragmentActivity implements
                     // Store RegId created by GCM Server in SharedPref
                     storeRegIdinSharedPref(context, regId);
                     Log.d("Registered", " with GCM Server successfully." + msg);
-                    Toast.makeText(context,"Registered with GCM Server successfully." + msg,Toast.LENGTH_SHORT);
+                    Toast.makeText(context,"Registered with GCM Server successfully." + msg,Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d("Reg ID Creation Failed.","Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg);
-                    Toast.makeText(context,"Reg ID Creation Failed. Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg, Toast.LENGTH_LONG);
+                    Toast.makeText(context,"Reg ID Creation Failed. Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg, Toast.LENGTH_LONG).show();
                 }
             }
         }.execute(null, null, null);
@@ -246,7 +218,7 @@ public class MainActivity extends FragmentActivity implements
         editor.putString(GCMConstants.REG_ID, regId);
         editor.putString(GCMConstants.UUID, uuid);
         editor.putString(GCMConstants.EMAIL,"email");
-        Toast.makeText(context, "Gravado" + regId + "   " + uuid, Toast.LENGTH_SHORT);
+        Toast.makeText(context, "Gravado" + regId + "   " + uuid, Toast.LENGTH_SHORT).show();
         Log.d("Registered", "Gravado" + regId + "   " + uuid);
         editor.commit();
         //Primeiro registro do device no servidor
