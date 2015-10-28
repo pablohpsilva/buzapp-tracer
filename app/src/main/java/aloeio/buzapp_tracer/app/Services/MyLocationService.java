@@ -4,7 +4,6 @@ import aloeio.buzapp_tracer.app.Models.BusInfoSingleton;
 import aloeio.buzapp_tracer.app.R;
 import aloeio.buzapp_tracer.app.Fragments.MapFragment;
 import aloeio.buzapp_tracer.app.Services.Overrides.MyLocationProvider;
-import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.mylocation.IMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;

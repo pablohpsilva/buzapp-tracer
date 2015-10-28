@@ -9,11 +9,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
-
-import java.io.*;
-import java.util.ArrayList;
 
 /**
  * Created by eduardo on 3/15/15.

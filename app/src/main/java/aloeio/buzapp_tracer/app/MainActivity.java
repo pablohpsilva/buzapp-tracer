@@ -129,26 +129,6 @@ public class MainActivity extends FragmentActivity implements
                     Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
                     startService(intent);
 
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            for(;;) {
-//                                Log.d("Thread", "Trying save id");
-//                                if (setIdOnFile) {
-//                                    saveId();
-//                                    Log.d("Thread", "Saved");
-//                                    return;
-//                                } else {
-//                                    try {
-//                                        Thread.sleep(2000);
-//                                    } catch (InterruptedException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }).start();
-
                 }
             }
 
@@ -222,10 +202,10 @@ public class MainActivity extends FragmentActivity implements
                     // Store RegId created by GCM Server in SharedPref
                     storeRegIdinSharedPref(context, regId);
                     Log.d("Registered", " with GCM Server successfully." + msg);
-                    Toast.makeText(context,"Registered with GCM Server successfully." + msg,Toast.LENGTH_SHORT);
+                    Toast.makeText(context,"Registered with GCM Server successfully." + msg,Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d("Reg ID Creation Failed.","Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg);
-                    Toast.makeText(context,"Reg ID Creation Failed. Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg, Toast.LENGTH_LONG);
+                    Toast.makeText(context,"Reg ID Creation Failed. Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time." + msg, Toast.LENGTH_LONG).show();
                 }
             }
         }.execute(null, null, null);
@@ -241,7 +221,7 @@ public class MainActivity extends FragmentActivity implements
         editor.putString(GCMConstants.REG_ID, regId);
         editor.putString(GCMConstants.UUID, uuid);
         editor.putString(GCMConstants.EMAIL,"email");
-        Toast.makeText(context, "Gravado" + regId + "   " + uuid, Toast.LENGTH_SHORT);
+        Toast.makeText(context, "Gravado" + regId + "   " + uuid, Toast.LENGTH_SHORT).show();
         Log.d("Registered", "Gravado" + regId + "   " + uuid);
         editor.commit();
 
