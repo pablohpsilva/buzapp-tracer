@@ -54,7 +54,10 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
-
+        if(isGooglePlayAvailable())
+            registerInBackground();
+        else
+            Toast.makeText(context,"Google play services não disponível",Toast.LENGTH_LONG);
 
 
 //        if(!f.exists()) {
@@ -221,8 +224,6 @@ public class MainActivity extends FragmentActivity implements
         Toast.makeText(context, "Gravado" + regId + "   " + uuid, Toast.LENGTH_SHORT).show();
         Log.d("Registered", "Gravado" + regId + "   " + uuid);
         editor.commit();
-        //Primeiro registro do device no servidor
-        BackgroundService.getDeviceInfo();
 
     }
 

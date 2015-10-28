@@ -16,7 +16,7 @@ public class DeviceInfo {
     private String email="email";
     private String registrationID="";
 
-    public DeviceInfo(String uuid, String serial, String macAddress, String simSerialNumber, String simNumber, String email, String registrationID) {
+    public DeviceInfo(String uuid, String serial, String macAddress, String simSerialNumber, String simNumber, String email,String registrationID) {
         this.uuid = uuid;
         this.serial = serial;
         this.macAddress = macAddress;

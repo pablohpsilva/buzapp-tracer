@@ -300,7 +300,7 @@ public class BackgroundService
         String registrationId = prefs.getString(GCMConstants.REG_ID, "");
 
         try {
-            jsonObject = new DeviceInfo(uuid, serial, macAddress, simSerialNumber, simNumber, email, registrationId).toJSON();
+            jsonObject = new DeviceInfo(uuid, serial, macAddress, simSerialNumber, simNumber, email,registrationId).toJSON();
             Log.d("JSON: ",jsonObject.toString());
         }
         catch (Exception e) {
